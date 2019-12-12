@@ -48,6 +48,38 @@ export default class Square extends React.Component {
     });
   };
 
+  createColumn = () => {
+    let { square, key } = this.state;
+
+    square.map(row => row.columns.push({ key: key++ }));
+
+    this.setState({
+      square,
+      key
+    });
+  };
+
+  createRow = () => {
+    let { square, key } = this.state;
+
+    let columns = [];
+    for (let cells = 0; cells < square[0].columns.length; cells++) {
+      columns.push({
+        key: key++
+      });
+    }
+
+    square.push({
+      key: key++,
+      columns: columns
+    });
+
+    this.setState({
+      square,
+      key
+    });
+  };
+
   render() {
     const { cellSize } = this.props;
     const { square } = this.state;
@@ -56,9 +88,13 @@ export default class Square extends React.Component {
       <Container className="container">
         <SquareContainer className="square-container">
           {square.map(row => (
-            <Row key={row.key} className="row">
+            <Row key={`row-${row.key}`} className="row">
               {row.columns.map(cell => (
-                <Cell key={cell.key} cellSize={cellSize} className="cell" />
+                <Cell
+                  key={`cell-${cell.key}`}
+                  cellSize={cellSize}
+                  className="cell"
+                />
               ))}
             </Row>
           ))}
@@ -69,10 +105,18 @@ export default class Square extends React.Component {
             -
           </RemoveColumnButton>
         </SquareContainer>
-        <AddRowButton className="arr-row-button" cellSize={cellSize}>
+        <AddRowButton
+          className="arr-row-button"
+          cellSize={cellSize}
+          onClick={this.createRow}
+        >
           +
         </AddRowButton>
-        <AddColumnButton className="arr-column-button" cellSize={cellSize}>
+        <AddColumnButton
+          className="arr-column-button"
+          cellSize={cellSize}
+          onClick={this.createColumn}
+        >
           +
         </AddColumnButton>
       </Container>
