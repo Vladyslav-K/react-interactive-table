@@ -1,11 +1,8 @@
 import React from "react";
-import Table from "../Table";
-import "./styles.css"
+import Square from "../Square";
 
 function App() {
-  return (
-      <Table rows={4} columns={4} />
-  );
+  return <Square initialWidth={4} initialHeight={4} cellSize={50} />;
 }
 
 export default App;
