@@ -1,8 +1,8 @@
 import React from "react";
 import {
+  Wrapper,
   Container,
-  SquareContainer,
-  Row,
+  Table,
   Cell,
   AddRowButton,
   AddColumnButton,
@@ -20,7 +20,8 @@ export default class Square extends React.Component {
       currentCellIndex: 0,
       currentRowIndex: 0,
       buttonsVisible: false,
-      buttonsDisplay: true,
+      removeRowButtonDisplay: true,
+      removeColumnButtonDisplay: true,
       removeRowButtonTop: 0,
       removeColumnButtonLeft: 0
     };
@@ -62,7 +63,7 @@ export default class Square extends React.Component {
       removeRowButtonTop
     } = this.state;
 
-    if (target.classList.contains("cell")) {
+    if (target.tagName === "TD") {
       removeColumnButtonLeft = target.offsetLeft;
       removeRowButtonTop = target.offsetTop;
       currentCellIndex = target.cellIndex;
@@ -75,7 +76,7 @@ export default class Square extends React.Component {
       removeColumnButtonLeft,
       removeRowButtonTop
     });
-  }
+  };
 
   createColumn = () => {
     let { square, key } = this.state;
@@ -135,60 +136,83 @@ export default class Square extends React.Component {
 
   render() {
     const { cellSize } = this.props;
-    const { square, buttonsVisible, buttonsDisplay, removeRowButtonTop, removeColumnButtonLeft } = this.state;
+    const {
+      square,
+      buttonsVisible,
+      removeRowButtonDisplay,
+      removeColumnButtonDisplay,
+      removeRowButtonTop,
+      removeColumnButtonLeft,
+      currentRowIndex,
+      currentCellIndex
+    } = this.state;
 
     return (
-      <Container className="container" cellSize={cellSize} onMouseOver={this.movingButtons}>
-        <SquareContainer
-          className="square-container"
-          onMouseEnter={this.showButtons}
-          onMouseLeave={this.hideButtons}
-        >
-          {square.map(row => (
-            <Row key={`row-${row.key}`} className="row">
-              {row.columns.map(cell => (
-                <Cell
-                  key={`cell-${cell.key}`}
-                  cellSize={cellSize}
-                  className="cell"
-                />
-              ))}
-            </Row>
-          ))}
-          <RemoveRowButton
-            className="remove-row-button"
-            cellSize={cellSize}
-            buttonsVisible={buttonsVisible}
-            buttonsDisplay={buttonsDisplay}
-            removeRowButtonTop={removeRowButtonTop}
-          >
-            -
-          </RemoveRowButton>
-          <RemoveColumnButton
-            classname="remove-column-button"
-            cellSize={cellSize}
-            buttonsVisible={buttonsVisible}
-            buttonsDisplay={buttonsDisplay}
-            removeColumnButtonLeft={removeColumnButtonLeft}
-          >
-            -
-          </RemoveColumnButton>
-        </SquareContainer>
-        <AddRowButton
-          className="add-row-button"
+      <Wrapper>
+        <Container
+          className="container"
           cellSize={cellSize}
-          onClick={this.createRow}
+          onMouseOver={this.movingButtons}
         >
-          +
-        </AddRowButton>
-        <AddColumnButton
-          className="add-column-button"
-          cellSize={cellSize}
-          onClick={this.createColumn}
-        >
-          +
-        </AddColumnButton>
-      </Container>
+          <div
+            className="square-container"
+            onMouseEnter={this.showButtons}
+            onMouseLeave={this.hideButtons}
+          >
+            <Table>
+              <tbody>
+                {square.map(row => (
+                  <tr key={`row-${row.key}`} className="row">
+                    {row.columns.map(cell => (
+                      <Cell
+                        key={`cell-${cell.key}`}
+                        cellSize={cellSize}
+                        className="cell"
+                        currentRowIndex={currentRowIndex}
+                        currentCellIndex={currentCellIndex}
+                      />
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+
+            <RemoveRowButton
+              className="remove-row-button"
+              cellSize={cellSize}
+              buttonsVisible={buttonsVisible}
+              removeRowButtonDisplay={removeRowButtonDisplay}
+              removeRowButtonTop={removeRowButtonTop}
+            >
+              -
+            </RemoveRowButton>
+            <RemoveColumnButton
+              classname="remove-column-button"
+              onClick={this.deleteColumn}
+              cellSize={cellSize}
+              buttonsVisible={buttonsVisible}
+              removeColumnButtonDisplay={removeColumnButtonDisplay}
+              removeColumnButtonLeft={removeColumnButtonLeft}
+            >
+              -
+            </RemoveColumnButton>
+          </div>
+          <AddRowButton
+            className="add-row-button"
+            cellSize={cellSize}
+            onClick={this.createRow}
+          >
+            +
+          </AddRowButton>
+          <AddColumnButton
+            className="add-column-button"
+            cellSize={cellSize}
+            onClick={this.createColumn}
+          >
+            +
+          </AddColumnButton>
+        </Container>
+      </Wrapper>
     );
   }
 }

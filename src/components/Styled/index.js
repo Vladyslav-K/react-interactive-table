@@ -1,32 +1,31 @@
 import styled from "styled-components";
 
+const Wrapper = styled.div`
+  display: flex;
+  margin: 0;
+  padding: 0;
+`;
+
 const Container = styled.div`
   display: inline-block;
   position: relative;
   left: 0;
   top: 0;
-  margin: ${props => props.cellSize * 2}px
-  border: 2px solid #48aae6;
+  margin: ${props => props.cellSize * 2}px;
+`;
+
+const Table = styled.table`
+  border: 1px solid #48aae6;
   cursor: grab;
 `;
 
-const SquareContainer = styled.div`
-  position: relative;
-  padding: 2px 0 0 2px;
-`;
-
-const Row = styled.div`
-  display: flex;
-`;
-
-const Cell = styled.div`
+const Cell = styled.td`
   height: ${props => props.cellSize}px;
   width: ${props => props.cellSize}px;
 
-  background-color: #48aae6;
+  padding: 0;
 
-  border-bottom: 2px solid #fff;
-  border-right: 2px solid #fff;
+  background-color: #48aae6;
 `;
 
 const Button = styled.div`
@@ -37,6 +36,7 @@ const Button = styled.div`
 
   height: ${props => props.cellSize}px;
   width: ${props => props.cellSize}px;
+  margin: 2px;
 
   color: #ffffff;
 
@@ -44,7 +44,6 @@ const Button = styled.div`
   font-weight: bold;
   text-align: center;
 
-  
   opacity: 1;
 
   transition-duration: 0.6s;
@@ -69,38 +68,40 @@ const RemoveButtons = styled(Button)`
 
 const AddRowButton = styled(AddButtons)`
   top: 100%;
-  margin-top: 4px;
-  margin-left: 2px;
+  left: 1px;
 `;
 
 const AddColumnButton = styled(AddButtons)`
   left: 100%;
-  top: 2px;
-  margin-left: 4px;
+  top: 1px;
 `;
 
 const RemoveRowButton = styled(RemoveButtons)`
   right: 100%;
   top: ${props => props.removeRowButtonTop}px
-  margin-right: 4px;
-  visibility: ${props => props.buttonsVisible === true ? "visible" : "hidden"};
-  opacity: ${props => props.buttonsVisible === true ? 1 : 0};
-  display: ${props => props.buttonsDisplay === true ? "block" : "none"};
+  margin: 1px 2px;
+  visibility: ${props =>
+    props.buttonsVisible === true ? "visible" : "hidden"};
+  opacity: ${props => (props.buttonsVisible === true ? 1 : 0)};
+  display: ${props =>
+    props.removeRowButtonDisplay === true ? "block" : "none"};
 `;
 
 const RemoveColumnButton = styled(RemoveButtons)`
   bottom: 100%;
   left: ${props => props.removeColumnButtonLeft}px
-  margin-bottom: 4px;
-  visibility: ${props => props.buttonsVisible === true ? "visible" : "hidden"};
-  opacity: ${props => props.buttonsVisible === true ? 1 : 0};
-  display: ${props => props.buttonsDisplay === true ? "block" : "none"};
+  margin: 2px 1px;
+  visibility: ${props =>
+    props.buttonsVisible === true ? "visible" : "hidden"};
+  opacity: ${props => (props.buttonsVisible === true ? 1 : 0)};
+  display: ${props =>
+    props.removeColumnButtonDisplay === true ? "block" : "none"};
 `;
 
 export {
+  Wrapper,
   Container,
-  SquareContainer,
-  Row,
+  Table,
   Cell,
   AddRowButton,
   AddColumnButton,
