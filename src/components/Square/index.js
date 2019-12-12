@@ -110,6 +110,39 @@ export default class Square extends React.Component {
     });
   };
 
+  deleteColumn = () => {
+    let { square, currentCellIndex, removeColumnButtonLeft } = this.state;
+    let { cellSize } = this.props;
+    const columns = square[0].columns;
+    const columnsLength = columns.length;
+    const lastCellIndex = columnsLength - 1;
+
+    if (columnsLength > 1) {
+      square.map(row => row.columns.splice(currentCellIndex, 1));
+    }
+
+    if (currentCellIndex === lastCellIndex) {
+      /*In this formula "2" - the padding of each cell, for the correct movement
+      of the button should be considered when calculating */
+      removeColumnButtonLeft =
+        cellSize * (currentCellIndex - 1) + 2 * currentCellIndex;
+
+      currentCellIndex--;
+    }
+
+    if (lastCellIndex <= 1) {
+      this.setState({
+        removeColumnButtonDisplay: false
+      });
+    }
+
+    this.setState({
+      square,
+      removeColumnButtonLeft,
+      currentCellIndex
+    });
+  };
+
   showButtons = () => {
     let { square, buttonsVisible } = this.state;
     if (square.length > 1) {
