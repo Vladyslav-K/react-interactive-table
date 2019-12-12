@@ -16,7 +16,11 @@ export default class Square extends React.Component {
 
     this.state = {
       square: [],
-      key: 0
+      key: 0,
+      currentCellIndex: 0,
+      currentRowIndex: 0,
+      buttonsVisible: false,
+      buttonsDisplay: true
     };
   }
 
@@ -80,13 +84,41 @@ export default class Square extends React.Component {
     });
   };
 
+  showButtons = () => {
+    let { square, buttonsVisible } = this.state;
+    if (square.length > 1) {
+      buttonsVisible = true;
+    }
+
+    if (square[0].columns.length > 1) {
+      buttonsVisible = true;
+    }
+
+    this.setState({
+      buttonsVisible: buttonsVisible
+    });
+  };
+
+  hideButtons = () => {
+    let { buttonsVisible } = this.state;
+    buttonsVisible = false;
+
+    this.setState({
+      buttonsVisible: buttonsVisible
+    });
+  };
+
   render() {
     const { cellSize } = this.props;
-    const { square } = this.state;
+    const { square, buttonsVisible, buttonsDisplay } = this.state;
 
     return (
-      <Container className="container">
-        <SquareContainer className="square-container">
+      <Container className="container" cellSize={cellSize}>
+        <SquareContainer
+          className="square-container"
+          onMouseEnter={this.showButtons}
+          onMouseLeave={this.hideButtons}
+        >
           {square.map(row => (
             <Row key={`row-${row.key}`} className="row">
               {row.columns.map(cell => (
@@ -98,22 +130,32 @@ export default class Square extends React.Component {
               ))}
             </Row>
           ))}
-          <RemoveRowButton className="remove-row-button" cellSize={cellSize}>
+          <RemoveRowButton
+            className="remove-row-button"
+            cellSize={cellSize}
+            buttonsVisible={buttonsVisible}
+            buttonsDisplay={buttonsDisplay}
+          >
             -
           </RemoveRowButton>
-          <RemoveColumnButton classname="remove-col-button" cellSize={cellSize}>
+          <RemoveColumnButton
+            classname="remove-column-button"
+            cellSize={cellSize}
+            buttonsVisible={buttonsVisible}
+            buttonsDisplay={buttonsDisplay}
+          >
             -
           </RemoveColumnButton>
         </SquareContainer>
         <AddRowButton
-          className="arr-row-button"
+          className="add-row-button"
           cellSize={cellSize}
           onClick={this.createRow}
         >
           +
         </AddRowButton>
         <AddColumnButton
-          className="arr-column-button"
+          className="add-column-button"
           cellSize={cellSize}
           onClick={this.createColumn}
         >

@@ -5,7 +5,7 @@ const Container = styled.div`
   position: relative;
   left: 0;
   top: 0;
-  margin: 65px;
+  margin: ${props => props.cellSize * 2}px
   border: 2px solid #48aae6;
   cursor: grab;
 `;
@@ -31,7 +31,6 @@ const Cell = styled.div`
 
 const Button = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   position: absolute;
@@ -59,12 +58,11 @@ const Button = styled.div`
 
 const AddButtons = styled(Button)`
   background-color: #f3a500;
-  line-height: 50px;
 `;
 
 const RemoveButtons = styled(Button)`
   background-color: #b20000;
-  line-height: 40px;
+  line-height: ${props => props.cellSize - props.cellSize / 5}px;
   display: block;
   visibility: hidden;
 `;
@@ -83,12 +81,19 @@ const AddColumnButton = styled(AddButtons)`
 
 const RemoveRowButton = styled(RemoveButtons)`
   right: 100%;
-  margin: 1px 2px;
+  margin-right: 4px;
+  margin-top: 2px;
+  visibility: ${props => props.buttonsVisible === true ? "visible" : "hidden"};
+  opacity: ${props => props.buttonsVisible === true ? 1 : 0};
+  display: ${props => props.buttonsDisplay === true ? "block" : "none"};
 `;
 
 const RemoveColumnButton = styled(RemoveButtons)`
   bottom: 100%;
-  margin: 2px 1px;
+  margin-bottom: 4px;
+  visibility: ${props => props.buttonsVisible === true ? "visible" : "hidden"};
+  opacity: ${props => props.buttonsVisible === true ? 1 : 0};
+  display: ${props => props.buttonsDisplay === true ? "block" : "none"};
 `;
 
 export {
