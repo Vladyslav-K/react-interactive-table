@@ -113,17 +113,18 @@ export default class Square extends React.Component {
   deleteColumn = () => {
     let { square, currentCellIndex, removeColumnButtonLeft } = this.state;
     let { cellSize } = this.props;
-    const columns = square[0].columns;
-    const columnsLength = columns.length;
-    const lastCellIndex = columnsLength - 1;
 
-    if (columnsLength > 1) {
+    const columns = square[0].columns.length;
+    const lastCellIndex = columns - 1;
+
+    if (columns > 1) {
       square.map(row => row.columns.splice(currentCellIndex, 1));
     }
 
     if (currentCellIndex === lastCellIndex) {
-      /*In this formula "2" - the padding of each cell, for the correct movement
+      /* In this formula "2" - the padding of each cell, for the correct movement
       of the button should be considered when calculating */
+
       removeColumnButtonLeft =
         cellSize * (currentCellIndex - 1) + 2 * currentCellIndex;
 
@@ -141,6 +142,38 @@ export default class Square extends React.Component {
       removeColumnButtonLeft,
       currentCellIndex
     });
+  };
+
+  deleteRow = () => {
+    let { square, currentRowIndex, removeRowButtonTop } = this.state;
+    let { cellSize } = this.props;
+
+    const rows = square.length;
+    const lastRowIndex = rows - 1;
+
+    if (rows > 1) {
+      square.splice(currentRowIndex, 1);
+
+      if (currentRowIndex === lastRowIndex) {
+        /* In this formula "2" - the padding of each cell, for the correct movement
+      of the button should be considered when calculating */
+        removeRowButtonTop =
+          cellSize * (currentRowIndex - 1) + 2 * currentRowIndex;
+        currentRowIndex--;
+      }
+
+      if (lastRowIndex <= 1) {
+        this.setState({
+          removeRowButtonDisplay: false
+        });
+      }
+
+      this.setState({
+        square,
+        removeRowButtonTop,
+        currentRowIndex
+      });
+    }
   };
 
   showButtons = () => {
@@ -212,6 +245,7 @@ export default class Square extends React.Component {
 
             <RemoveRowButton
               className="remove-row-button"
+              onClick={this.deleteRow}
               cellSize={cellSize}
               buttonsVisible={buttonsVisible}
               removeRowButtonDisplay={removeRowButtonDisplay}
