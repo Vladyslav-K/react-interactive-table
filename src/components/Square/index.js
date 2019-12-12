@@ -17,14 +17,27 @@ export default class Square extends React.Component {
     this.state = {
       square: [],
       key: 0,
+
+      containerLeft: this.props.cellSize * 2,
+      containerTop: this.props.cellSize * 2,
+
       currentCellIndex: 0,
       currentRowIndex: 0,
+
       buttonsVisible: false,
       removeRowButtonDisplay: true,
       removeColumnButtonDisplay: true,
+
       removeRowButtonTop: 0,
-      removeColumnButtonLeft: 0
+      removeColumnButtonLeft: 0,
+
+      containerAbsolute: false,
+      dragging: false,
+      offsetX: 0,
+      offsetY: 0
     };
+
+    this.containerRef = React.createRef();
   }
 
   componentDidMount() {
@@ -43,6 +56,7 @@ export default class Square extends React.Component {
           key: key++
         };
       }
+
       square[rows] = {
         key: key++,
         columns: columns
@@ -52,6 +66,47 @@ export default class Square extends React.Component {
     this.setState({
       square,
       key
+    });
+  };
+
+  onDragStart = ({ clientX, clientY }) => {
+    let { offsetX, offsetY } = this.state;
+
+    offsetX = clientX - this.containerRef.current.getBoundingClientRect().left;
+    offsetY = clientY - this.containerRef.current.getBoundingClientRect().top;
+
+    this.setState({
+      dragging: true,
+      containerAbsolute: true,
+      offsetX: offsetX,
+      offsetY: offsetY
+    });
+  };
+
+  onDragging = ({ pageX, pageY }) => {
+    let {
+      offsetX,
+      offsetY,
+      containerLeft,
+      containerTop,
+      dragging
+    } = this.state;
+
+    if (dragging) {
+      containerLeft = pageX - offsetX;
+      containerTop = pageY - offsetY;
+
+      this.setState({
+        containerLeft: containerLeft,
+        containerTop: containerTop
+      });
+    }
+  };
+
+  onDragEnd = () => {
+    this.setState({
+      dragging: false,
+      containerAbsolute: false
     });
   };
 
@@ -93,6 +148,7 @@ export default class Square extends React.Component {
     let { square, key } = this.state;
 
     let columns = [];
+
     for (let cells = 0; cells < square[0].columns.length; cells++) {
       columns.push({
         key: key++
@@ -124,7 +180,6 @@ export default class Square extends React.Component {
     if (currentCellIndex === lastCellIndex) {
       /* In this formula "2" - the padding of each cell, for the correct movement
       of the button should be considered when calculating */
-
       removeColumnButtonLeft =
         cellSize * (currentCellIndex - 1) + 2 * currentCellIndex;
 
@@ -178,6 +233,7 @@ export default class Square extends React.Component {
 
   showButtons = () => {
     let { square, buttonsVisible } = this.state;
+
     if (square.length > 1) {
       buttonsVisible = true;
     }
@@ -202,6 +258,7 @@ export default class Square extends React.Component {
 
   render() {
     const { cellSize } = this.props;
+
     const {
       square,
       buttonsVisible,
@@ -210,14 +267,27 @@ export default class Square extends React.Component {
       removeRowButtonTop,
       removeColumnButtonLeft,
       currentRowIndex,
-      currentCellIndex
+      currentCellIndex,
+      containerAbsolute,
+      containerLeft,
+      containerTop,
+      dragging
     } = this.state;
 
     return (
-      <Wrapper>
+      <Wrapper
+        className="wrapper"
+        onMouseMove={this.onDragging}
+        onMouseUp={this.onDragEnd}
+      >
         <Container
           className="container"
+          ref={this.containerRef}
+          containerLeft={containerLeft}
+          containerTop={containerTop}
+          containerAbsolute={containerAbsolute}
           cellSize={cellSize}
+          dragging={dragging}
           onMouseOver={this.movingButtons}
         >
           <div
@@ -225,7 +295,7 @@ export default class Square extends React.Component {
             onMouseEnter={this.showButtons}
             onMouseLeave={this.hideButtons}
           >
-            <Table>
+            <Table onMouseDown={this.onDragStart} onDragStart={() => false}>
               <tbody>
                 {square.map(row => (
                   <tr key={`row-${row.key}`} className="row">
