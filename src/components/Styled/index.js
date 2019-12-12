@@ -81,8 +81,8 @@ const AddColumnButton = styled(AddButtons)`
 
 const RemoveRowButton = styled(RemoveButtons)`
   right: 100%;
+  top: ${props => props.removeRowButtonTop}px
   margin-right: 4px;
-  margin-top: 2px;
   visibility: ${props => props.buttonsVisible === true ? "visible" : "hidden"};
   opacity: ${props => props.buttonsVisible === true ? 1 : 0};
   display: ${props => props.buttonsDisplay === true ? "block" : "none"};
@@ -90,6 +90,7 @@ const RemoveRowButton = styled(RemoveButtons)`
 
 const RemoveColumnButton = styled(RemoveButtons)`
   bottom: 100%;
+  left: ${props => props.removeColumnButtonLeft}px
   margin-bottom: 4px;
   visibility: ${props => props.buttonsVisible === true ? "visible" : "hidden"};
   opacity: ${props => props.buttonsVisible === true ? 1 : 0};

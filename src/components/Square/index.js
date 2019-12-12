@@ -20,7 +20,9 @@ export default class Square extends React.Component {
       currentCellIndex: 0,
       currentRowIndex: 0,
       buttonsVisible: false,
-      buttonsDisplay: true
+      buttonsDisplay: true,
+      removeRowButtonTop: 0,
+      removeColumnButtonLeft: 0
     };
   }
 
@@ -51,6 +53,29 @@ export default class Square extends React.Component {
       key
     });
   };
+
+  movingButtons = ({ target }) => {
+    let {
+      currentRowIndex,
+      currentCellIndex,
+      removeColumnButtonLeft,
+      removeRowButtonTop
+    } = this.state;
+
+    if (target.classList.contains("cell")) {
+      removeColumnButtonLeft = target.offsetLeft;
+      removeRowButtonTop = target.offsetTop;
+      currentCellIndex = target.cellIndex;
+      currentRowIndex = target.parentNode.rowIndex;
+    }
+
+    this.setState({
+      currentRowIndex,
+      currentCellIndex,
+      removeColumnButtonLeft,
+      removeRowButtonTop
+    });
+  }
 
   createColumn = () => {
     let { square, key } = this.state;
@@ -110,10 +135,10 @@ export default class Square extends React.Component {
 
   render() {
     const { cellSize } = this.props;
-    const { square, buttonsVisible, buttonsDisplay } = this.state;
+    const { square, buttonsVisible, buttonsDisplay, removeRowButtonTop, removeColumnButtonLeft } = this.state;
 
     return (
-      <Container className="container" cellSize={cellSize}>
+      <Container className="container" cellSize={cellSize} onMouseOver={this.movingButtons}>
         <SquareContainer
           className="square-container"
           onMouseEnter={this.showButtons}
@@ -135,6 +160,7 @@ export default class Square extends React.Component {
             cellSize={cellSize}
             buttonsVisible={buttonsVisible}
             buttonsDisplay={buttonsDisplay}
+            removeRowButtonTop={removeRowButtonTop}
           >
             -
           </RemoveRowButton>
@@ -143,6 +169,7 @@ export default class Square extends React.Component {
             cellSize={cellSize}
             buttonsVisible={buttonsVisible}
             buttonsDisplay={buttonsDisplay}
+            removeColumnButtonLeft={removeColumnButtonLeft}
           >
             -
           </RemoveColumnButton>
