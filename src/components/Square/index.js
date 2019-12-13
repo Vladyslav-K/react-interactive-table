@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {
   Wrapper,
   Container,
@@ -232,18 +233,35 @@ export default class Square extends React.Component {
   };
 
   showButtons = () => {
-    let { square, buttonsVisible } = this.state;
+    let {
+      square,
+      buttonsVisible,
+      removeRowButtonDisplay,
+      removeColumnButtonDisplay
+    } = this.state;
 
     if (square.length > 1) {
       buttonsVisible = true;
+      removeRowButtonDisplay = true;
     }
 
     if (square[0].columns.length > 1) {
       buttonsVisible = true;
+      removeColumnButtonDisplay = true;
+    }
+
+    if (square.length <= 1) {
+      removeRowButtonDisplay = false;
+    }
+
+    if (square[0].columns.length <= 1) {
+      removeColumnButtonDisplay = false;
     }
 
     this.setState({
-      buttonsVisible: buttonsVisible
+      buttonsVisible: buttonsVisible,
+      removeRowButtonDisplay: removeRowButtonDisplay,
+      removeColumnButtonDisplay: removeColumnButtonDisplay
     });
   };
 
@@ -353,3 +371,15 @@ export default class Square extends React.Component {
     );
   }
 }
+
+Square.defaultProps = {
+  cellSize: 50,
+  initialHeight: 4,
+  initialWidth: 4
+};
+
+Square.propTypes = {
+  cellSize: PropTypes.number.isRequired,
+  initialHeight: PropTypes.number.isRequired,
+  initialWidth: PropTypes.number.isRequired
+};
