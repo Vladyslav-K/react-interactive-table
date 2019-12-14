@@ -37,6 +37,20 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^2.1.1"
+    "babel-jest": "^24.9.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.1",
+    "enzyme-to-json": "^3.4.3",
+    "gh-pages": "^2.1.1",
+    "jest": "^24.9.0",
+    "react-addons-test-utils": "^15.6.2"
+  },
+  "jest": {
+    "snapshotSerializers": [
+      "<rootDir>/node_modules/enzyme-to-json/serializer"
+    ],
+    "moduleNameMapper": {
+      "^.+\\.(css|scss)$": "identity-obj-proxy"
+    }
   }
 }

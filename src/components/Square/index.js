@@ -314,7 +314,7 @@ export default class Square extends React.Component {
             onMouseLeave={this.hideButtons}
           >
             <Table onMouseDown={this.onDragStart} onDragStart={() => false}>
-              <tbody>
+              <tbody className="tbody">
                 {square.map(row => (
                   <tr key={`row-${row.key}`} className="row">
                     {row.columns.map(cell => (
@@ -342,7 +342,7 @@ export default class Square extends React.Component {
               -
             </RemoveRowButton>
             <RemoveColumnButton
-              classname="remove-column-button"
+              className="remove-column-button"
               onClick={this.deleteColumn}
               cellSize={cellSize}
               buttonsVisible={buttonsVisible}
