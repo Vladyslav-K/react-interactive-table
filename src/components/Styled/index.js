@@ -13,8 +13,8 @@ const Container = styled.div`
 
   position: relative;
 
-  left: ${props => props.containerLeft}px;
-  top: ${props => props.containerTop}px;
+  left: ${props => props.containerPosition.left}px;
+  top: ${props => props.containerPosition.top}px;
 `;
 
 const Table = styled.table`

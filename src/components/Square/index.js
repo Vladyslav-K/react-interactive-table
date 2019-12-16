@@ -19,8 +19,10 @@ export default class Square extends React.Component {
       square: [],
       key: 0,
 
-      containerLeft: this.props.cellSize * 2,
-      containerTop: this.props.cellSize * 2,
+      containerPosition: {
+        left: this.props.cellSize * 2,
+        top: this.props.cellSize * 2
+      },
 
       currentCellIndex: 0,
       currentRowIndex: 0,
@@ -83,21 +85,14 @@ export default class Square extends React.Component {
   };
 
   onDragging = ({ pageX, pageY }) => {
-    let {
-      offsetX,
-      offsetY,
-      containerLeft,
-      containerTop,
-      dragging
-    } = this.state;
+    let { offsetX, offsetY, containerPosition, dragging } = this.state;
 
     if (dragging) {
-      containerLeft = pageX - offsetX;
-      containerTop = pageY - offsetY;
+      containerPosition.left = pageX - offsetX;
+      containerPosition.top = pageY - offsetY;
 
       this.setState({
-        containerLeft,
-        containerTop
+        containerPosition
       });
     }
   };
@@ -279,10 +274,7 @@ export default class Square extends React.Component {
       removeColumnButtonDisplay,
       removeRowButtonTop,
       removeColumnButtonLeft,
-      currentRowIndex,
-      currentCellIndex,
-      containerLeft,
-      containerTop
+      containerPosition
     } = this.state;
 
     return (
@@ -294,8 +286,7 @@ export default class Square extends React.Component {
         <Container
           className="container"
           ref={this.containerRef}
-          containerLeft={containerLeft}
-          containerTop={containerTop}
+          containerPosition={containerPosition}
           cellSize={cellSize}
           onMouseOver={this.movingButtons}
         >
@@ -313,8 +304,6 @@ export default class Square extends React.Component {
                         key={`cell-${cell.key}`}
                         cellSize={cellSize}
                         className="cell"
-                        currentRowIndex={currentRowIndex}
-                        currentCellIndex={currentCellIndex}
                       />
                     ))}
                   </tr>
