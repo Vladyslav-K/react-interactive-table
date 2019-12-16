@@ -17,7 +17,6 @@ export default class Square extends React.Component {
 
     this.state = {
       square: [],
-      key: 0,
 
       containerPosition: {
         left: this.props.cellSize * 2,
@@ -54,13 +53,10 @@ export default class Square extends React.Component {
       let columns = [];
 
       for (let cells = 0; cells < initialWidth; cells++) {
-        columns[cells] = {
-          key: key++
-        };
+        columns[cells] = {};
       }
 
       square[rows] = {
-        key: key++,
         columns: columns
       };
     }
@@ -278,33 +274,20 @@ export default class Square extends React.Component {
     } = this.state;
 
     return (
-      <Wrapper
-        className="wrapper"
-        onMouseMove={this.onDragging}
-        onMouseUp={this.onDragEnd}
-      >
+      <Wrapper onMouseMove={this.onDragging} onMouseUp={this.onDragEnd}>
         <Container
-          className="container"
           ref={this.containerRef}
           containerPosition={containerPosition}
           cellSize={cellSize}
           onMouseOver={this.movingButtons}
         >
-          <div
-            className="square-container"
-            onMouseEnter={this.showButtons}
-            onMouseLeave={this.hideButtons}
-          >
+          <div onMouseEnter={this.showButtons} onMouseLeave={this.hideButtons}>
             <Table onMouseDown={this.onDragStart} onDragStart={() => false}>
-              <tbody className="tbody">
-                {square.map(row => (
-                  <tr key={`row-${row.key}`} className="row">
-                    {row.columns.map(cell => (
-                      <Cell
-                        key={`cell-${cell.key}`}
-                        cellSize={cellSize}
-                        className="cell"
-                      />
+              <tbody>
+                {square.map((row, index) => (
+                  <tr key={`row-${index}`}>
+                    {row.columns.map((cell, index) => (
+                      <Cell key={`cell-${index}`} cellSize={cellSize} />
                     ))}
                   </tr>
                 ))}
@@ -312,7 +295,6 @@ export default class Square extends React.Component {
             </Table>
 
             <RemoveRowButton
-              className="remove-row-button"
               onClick={this.deleteRow}
               cellSize={cellSize}
               buttonsVisible={buttonsVisible}
@@ -322,7 +304,6 @@ export default class Square extends React.Component {
               -
             </RemoveRowButton>
             <RemoveColumnButton
-              className="remove-column-button"
               onClick={this.deleteColumn}
               cellSize={cellSize}
               buttonsVisible={buttonsVisible}
@@ -332,18 +313,10 @@ export default class Square extends React.Component {
               -
             </RemoveColumnButton>
           </div>
-          <AddRowButton
-            className="add-row-button"
-            cellSize={cellSize}
-            onClick={this.createRow}
-          >
+          <AddRowButton cellSize={cellSize} onClick={this.createRow}>
             +
           </AddRowButton>
-          <AddColumnButton
-            className="add-column-button"
-            cellSize={cellSize}
-            onClick={this.createColumn}
-          >
+          <AddColumnButton cellSize={cellSize} onClick={this.createColumn}>
             +
           </AddColumnButton>
         </Container>
