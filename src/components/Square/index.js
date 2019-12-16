@@ -32,7 +32,6 @@ export default class Square extends React.Component {
       removeRowButtonTop: 0,
       removeColumnButtonLeft: 0,
 
-      containerAbsolute: false,
       dragging: false,
       offsetX: 0,
       offsetY: 0
@@ -78,7 +77,6 @@ export default class Square extends React.Component {
 
     this.setState({
       dragging: true,
-      containerAbsolute: true,
       offsetX: offsetX,
       offsetY: offsetY
     });
@@ -106,8 +104,7 @@ export default class Square extends React.Component {
 
   onDragEnd = () => {
     this.setState({
-      dragging: false,
-      containerAbsolute: false
+      dragging: false
     });
   };
 
@@ -286,7 +283,6 @@ export default class Square extends React.Component {
       removeColumnButtonLeft,
       currentRowIndex,
       currentCellIndex,
-      containerAbsolute,
       containerLeft,
       containerTop,
       dragging
@@ -303,7 +299,6 @@ export default class Square extends React.Component {
           ref={this.containerRef}
           containerLeft={containerLeft}
           containerTop={containerTop}
-          containerAbsolute={containerAbsolute}
           cellSize={cellSize}
           dragging={dragging}
           onMouseOver={this.movingButtons}

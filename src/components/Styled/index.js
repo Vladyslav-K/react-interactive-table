@@ -12,7 +12,7 @@ const Container = styled.div`
   display: inline-block;
 
   position: ${props =>
-    props.containerAbsolute === true ? "absolute" : "relative"};
+    props.dragging === true ? "absolute" : "relative"};
 
   left: ${props => props.containerLeft}px;
   top: ${props => props.containerTop}px;
