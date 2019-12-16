@@ -77,8 +77,8 @@ export default class Square extends React.Component {
 
     this.setState({
       dragging: true,
-      offsetX: offsetX,
-      offsetY: offsetY
+      offsetX,
+      offsetY
     });
   };
 
@@ -96,8 +96,8 @@ export default class Square extends React.Component {
       containerTop = pageY - offsetY;
 
       this.setState({
-        containerLeft: containerLeft,
-        containerTop: containerTop
+        containerLeft,
+        containerTop
       });
     }
   };
@@ -212,6 +212,7 @@ export default class Square extends React.Component {
       of the button should be considered when calculating */
         removeRowButtonTop =
           cellSize * (currentRowIndex - 1) + 2 * currentRowIndex;
+
         currentRowIndex--;
       }
 
@@ -256,18 +257,15 @@ export default class Square extends React.Component {
     }
 
     this.setState({
-      buttonsVisible: buttonsVisible,
-      removeRowButtonDisplay: removeRowButtonDisplay,
-      removeColumnButtonDisplay: removeColumnButtonDisplay
+      buttonsVisible,
+      removeRowButtonDisplay,
+      removeColumnButtonDisplay
     });
   };
 
   hideButtons = () => {
-    let { buttonsVisible } = this.state;
-    buttonsVisible = false;
-
     this.setState({
-      buttonsVisible: buttonsVisible
+      buttonsVisible: false
     });
   };
 
