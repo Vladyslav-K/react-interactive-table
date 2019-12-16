@@ -11,8 +11,7 @@ const Wrapper = styled.div`
 const Container = styled.div`
   display: inline-block;
 
-  position: ${props =>
-    props.dragging === true ? "absolute" : "relative"};
+  position: relative;
 
   left: ${props => props.containerLeft}px;
   top: ${props => props.containerTop}px;

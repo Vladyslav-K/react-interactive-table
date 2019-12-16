@@ -72,11 +72,14 @@ export default class Square extends React.Component {
   onDragStart = ({ clientX, clientY }) => {
     let { offsetX, offsetY } = this.state;
 
+    this.setState({
+      dragging: true
+    });
+
     offsetX = clientX - this.containerRef.current.getBoundingClientRect().left;
     offsetY = clientY - this.containerRef.current.getBoundingClientRect().top;
 
     this.setState({
-      dragging: true,
       offsetX: offsetX,
       offsetY: offsetY
     });
@@ -100,6 +103,8 @@ export default class Square extends React.Component {
         containerTop: containerTop
       });
     }
+
+    console.log(offsetX, offsetY);
   };
 
   onDragEnd = () => {
@@ -284,8 +289,7 @@ export default class Square extends React.Component {
       currentRowIndex,
       currentCellIndex,
       containerLeft,
-      containerTop,
-      dragging
+      containerTop
     } = this.state;
 
     return (
@@ -300,7 +304,6 @@ export default class Square extends React.Component {
           containerLeft={containerLeft}
           containerTop={containerTop}
           cellSize={cellSize}
-          dragging={dragging}
           onMouseOver={this.movingButtons}
         >
           <div
