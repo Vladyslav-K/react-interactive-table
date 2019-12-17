@@ -97,7 +97,7 @@ const RemoveRowButton = styled(RemoveButtons)`
     props.buttonsVisible === true ? "visible" : "hidden"};
   opacity: ${props => (props.buttonsVisible === true ? 1 : 0)};
 
-  top: ${props => props.buttonsPoisiton.top}px;
+  top: ${props => props.buttonsPosition.top}px;
   right: 100%;
   margin: 3px 2px;
 `;
@@ -110,7 +110,7 @@ const RemoveColumnButton = styled(RemoveButtons)`
   opacity: ${props => (props.buttonsVisible === true ? 1 : 0)};
 
   bottom: 100%;
-  left: ${props => props.buttonsPoisiton.left}px;
+  left: ${props => props.buttonsPosition.left}px;
   margin: 2px 3px;
 `;
 
@@ -129,7 +129,7 @@ export default class Square extends React.Component {
         top: `${this.props.cellSize * 2}px`
       },
 
-      buttonsPoisiton: {
+      buttonsPosition: {
         left: 0,
         top: 0
       },
@@ -257,8 +257,8 @@ export default class Square extends React.Component {
 
   movingButtons = ({ target }) => {
     const { cellSize } = this.props;
-    const { buttonsPoisiton } = this.state;
-    const cloneButtonsPosition = { ...buttonsPoisiton };
+    const { buttonsPosition } = this.state;
+    const cloneButtonsPosition = { ...buttonsPosition };
 
     if (target.tagName === "TD") {
       /* In this formula "2" - the padding of each cell, for the correct movement
@@ -273,7 +273,7 @@ export default class Square extends React.Component {
     }
 
     this.setState({
-      buttonsPoisiton: cloneButtonsPosition
+      buttonsPosition: cloneButtonsPosition
     });
   };
 
@@ -298,8 +298,8 @@ export default class Square extends React.Component {
 
   deleteColumn = () => {
     const { cellSize } = this.props;
-    const { rows, columns, buttonsPoisiton } = this.state;
-    const cloneButtonsPosition = { ...buttonsPoisiton };
+    const { rows, columns, buttonsPosition } = this.state;
+    const cloneButtonsPosition = { ...buttonsPosition };
 
     const cloneRows = [...rows];
     const cloneColumns = [...columns];
@@ -329,14 +329,14 @@ export default class Square extends React.Component {
     this.setState({
       rows: cloneRows,
       columns: cloneColumns,
-      buttonsPoisiton: cloneButtonsPosition
+      buttonsPosition: cloneButtonsPosition
     });
   };
 
   deleteRow = () => {
     const { cellSize } = this.props;
-    const { rows, buttonsPoisiton } = this.state;
-    const cloneButtonsPosition = { ...buttonsPoisiton };
+    const { rows, buttonsPosition } = this.state;
+    const cloneButtonsPosition = { ...buttonsPosition };
 
     const cloneRows = [...rows];
 
@@ -364,7 +364,7 @@ export default class Square extends React.Component {
 
     this.setState({
       rows: cloneRows,
-      buttonsPoisiton: cloneButtonsPosition
+      buttonsPosition: cloneButtonsPosition
     });
   };
 
@@ -401,7 +401,7 @@ export default class Square extends React.Component {
       buttonsVisible,
       removeRowButtonDisplay,
       removeColumnButtonDisplay,
-      buttonsPoisiton,
+      buttonsPosition,
       containerPosition
     } = this.state;
 
@@ -436,7 +436,7 @@ export default class Square extends React.Component {
               cellSize={cellSize}
               buttonsVisible={buttonsVisible}
               removeRowButtonDisplay={removeRowButtonDisplay}
-              buttonsPoisiton={buttonsPoisiton}
+              buttonsPosition={buttonsPosition}
             >
               -
             </RemoveRowButton>
@@ -446,15 +446,23 @@ export default class Square extends React.Component {
               cellSize={cellSize}
               buttonsVisible={buttonsVisible}
               removeColumnButtonDisplay={removeColumnButtonDisplay}
-              buttonsPoisiton={buttonsPoisiton}
+              buttonsPosition={buttonsPosition}
             >
               -
             </RemoveColumnButton>
           </div>
-          <AddRowButton id="add-row-button" cellSize={cellSize} onClick={this.createRow}>
+          <AddRowButton
+            id="add-row-button"
+            cellSize={cellSize}
+            onClick={this.createRow}
+          >
             +
           </AddRowButton>
-          <AddColumnButton id="add-column-button" cellSize={cellSize} onClick={this.createColumn}>
+          <AddColumnButton
+            id="add-column-button"
+            cellSize={cellSize}
+            onClick={this.createColumn}
+          >
             +
           </AddColumnButton>
         </Container>
