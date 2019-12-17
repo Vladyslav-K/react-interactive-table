@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.js": "/react-interactive-table/static/js/main.ae5632ed.chunk.js",
-    "main.js.map": "/react-interactive-table/static/js/main.ae5632ed.chunk.js.map",
+    "main.js": "/react-interactive-table/static/js/main.97530962.chunk.js",
+    "main.js.map": "/react-interactive-table/static/js/main.97530962.chunk.js.map",
     "runtime-main.js": "/react-interactive-table/static/js/runtime-main.a2de3565.js",
     "runtime-main.js.map": "/react-interactive-table/static/js/runtime-main.a2de3565.js.map",
     "static/js/2.77cee787.chunk.js": "/react-interactive-table/static/js/2.77cee787.chunk.js",
     "static/js/2.77cee787.chunk.js.map": "/react-interactive-table/static/js/2.77cee787.chunk.js.map",
     "index.html": "/react-interactive-table/index.html",
-    "precache-manifest.1bcb71a6c454cc6a2186bab7e4106217.js": "/react-interactive-table/precache-manifest.1bcb71a6c454cc6a2186bab7e4106217.js",
+    "precache-manifest.a65002192dcbd1d03361741a61b7fa69.js": "/react-interactive-table/precache-manifest.a65002192dcbd1d03361741a61b7fa69.js",
     "service-worker.js": "/react-interactive-table/service-worker.js",
     "static/js/2.77cee787.chunk.js.LICENSE": "/react-interactive-table/static/js/2.77cee787.chunk.js.LICENSE"
   },
   "entrypoints": [
     "static/js/runtime-main.a2de3565.js",
     "static/js/2.77cee787.chunk.js",
-    "static/js/main.ae5632ed.chunk.js"
+    "static/js/main.97530962.chunk.js"
   ]
 }
