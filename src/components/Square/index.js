@@ -13,10 +13,10 @@ const Wrapper = styled.div`
 const Container = styled.div`
   display: inline-block;
 
-  position: relative;
+  position: absolute;
 
-  left: ${props => props.containerPosition.left}px;
-  top: ${props => props.containerPosition.top}px;
+  left: ${props => props.containerLeft}px;
+  top: ${props => props.containerTop}px;
 `;
 
 const Table = styled.table`
@@ -116,10 +116,14 @@ export default class Square extends React.Component {
     this.state = {
       square: [],
 
-      containerPosition: {
-        left: this.props.cellSize * 2,
-        top: this.props.cellSize * 2
-      },
+      rows: [],
+      columns: [],
+
+      rowKey: 0,
+      cellKey: 0,
+
+      containerLeft: this.props.cellSize * 2,
+      containerTop: this.props.cellSize * 2,
 
       currentCellIndex: 0,
       currentRowIndex: 0,
@@ -136,6 +140,9 @@ export default class Square extends React.Component {
       offsetY: 0
     };
 
+    this.rowKey = 0;
+    this.cellKey = 0;
+
     this.containerRef = React.createRef();
   }
 
@@ -144,28 +151,33 @@ export default class Square extends React.Component {
   }
 
   createSquare = () => {
-    let { square, key } = this.state;
-    let { initialHeight, initialWidth } = this.props;
+    const { rows, columns } = this.state;
+    const cloneRows = [...rows];
+    const cloneColumns = [...columns];
+
+    const { initialHeight, initialWidth } = this.props;
+
+    for (let cells = 0; cells < initialWidth; cells++) {
+      cloneColumns[cells] = {
+        key: this.cellKey++
+      };
+    }
 
     for (let rows = 0; rows < initialHeight; rows++) {
-      let columns = [];
-
-      for (let cells = 0; cells < initialWidth; cells++) {
-        columns[cells] = {};
-      }
-
-      square[rows] = {
-        columns: columns
+      cloneRows[rows] = {
+        key: this.rowKey++,
+        columns: cloneColumns
       };
     }
 
     this.setState({
-      square,
-      key
+      rows: cloneRows,
+      columns: cloneColumns
     });
   };
 
-  onDragStart = ({ clientX, clientY }) => {
+  onDragStart = ({ clientX, clientY, target }) => {
+    console.log(target.closest("table"))
     let { offsetX, offsetY } = this.state;
 
     offsetX = clientX - this.containerRef.current.getBoundingClientRect().left;
@@ -179,14 +191,16 @@ export default class Square extends React.Component {
   };
 
   onDragging = ({ pageX, pageY }) => {
-    let { offsetX, offsetY, containerPosition, dragging } = this.state;
+    const { offsetX, offsetY, dragging } = this.state;
+    let { containerLeft, containerTop } = this.state;
 
     if (dragging) {
-      containerPosition.left = pageX - offsetX;
-      containerPosition.top = pageY - offsetY;
+      containerLeft = pageX - offsetX;
+      containerTop = pageY - offsetY;
 
       this.setState({
-        containerPosition
+        containerLeft,
+        containerTop
       });
     }
   };
@@ -221,47 +235,37 @@ export default class Square extends React.Component {
   };
 
   createColumn = () => {
-    let { square, key } = this.state;
-
-    square.map(row => row.columns.push({ key: key++ }));
+    const { columns } = this.state;
+    const cloneColumns = [...columns, { key: this.cellKey++ }];
 
     this.setState({
-      square,
-      key
+      columns: cloneColumns
     });
   };
 
   createRow = () => {
-    let { square, key } = this.state;
-
-    let columns = [];
-
-    for (let cells = 0; cells < square[0].columns.length; cells++) {
-      columns.push({
-        key: key++
-      });
-    }
-
-    square.push({
-      key: key++,
-      columns: columns
-    });
+    const { rows, columns } = this.state;
+    const cloneColumns = [...columns];
+    const cloneRows = [...rows, { key: this.rowKey++, columns: cloneColumns }];
 
     this.setState({
-      square,
-      key
+      rows: cloneRows
     });
   };
 
   deleteColumn = () => {
-    let { square, currentCellIndex, removeColumnButtonLeft } = this.state;
-    let { cellSize } = this.props;
+    const { cellSize } = this.props;
+    const { rows, columns } = this.state;
+    let { currentCellIndex, removeColumnButtonLeft } = this.state;
 
-    const columns = square[0].columns.length;
-    const lastCellIndex = columns - 1;
+    const cloneRows = [...rows];
+    const cloneColumns = [...columns];
 
-    if (columns > 1) {
-      square.map(row => row.columns.splice(currentCellIndex, 1));
+    const columnsLength = cloneColumns.length;
+    const lastCellIndex = columnsLength - 1;
+
+    if (columnsLength > 1) {
+      cloneColumns.splice(currentCellIndex, 1);
     }
 
     if (currentCellIndex === lastCellIndex) {
@@ -280,76 +284,65 @@ export default class Square extends React.Component {
     }
 
     this.setState({
-      square,
+      rows: cloneRows,
+      columns: cloneColumns,
       removeColumnButtonLeft,
       currentCellIndex
     });
   };
 
   deleteRow = () => {
-    let { square, currentRowIndex, removeRowButtonTop } = this.state;
-    let { cellSize } = this.props;
+    const { cellSize } = this.props;
+    const { rows } = this.state;
+    let { currentRowIndex, removeRowButtonTop } = this.state;
 
-    const rows = square.length;
-    const lastRowIndex = rows - 1;
+    const cloneRows = [...rows];
 
-    if (rows > 1) {
-      square.splice(currentRowIndex, 1);
+    const rowsLength = cloneRows.length;
+    const lastRowIndex = rowsLength - 1;
 
-      if (currentRowIndex === lastRowIndex) {
-        /* In this formula "2" - the padding of each cell, for the correct movement
-      of the button should be considered when calculating */
-        removeRowButtonTop =
-          cellSize * (currentRowIndex - 1) + 2 * currentRowIndex;
+    if (rowsLength > 1) {
+      cloneRows.splice(currentRowIndex, 1);
+    }
 
-        currentRowIndex--;
-      }
+    if (currentRowIndex === lastRowIndex) {
+      /* In this formula "2" - the padding of each cell, for the correct movement
+    of the button should be considered when calculating */
+      removeRowButtonTop =
+        cellSize * (currentRowIndex - 1) + 2 * currentRowIndex;
 
-      if (lastRowIndex <= 1) {
-        this.setState({
-          removeRowButtonDisplay: false
-        });
-      }
+      currentRowIndex--;
+    }
 
+    if (lastRowIndex <= 1) {
       this.setState({
-        square,
-        removeRowButtonTop,
-        currentRowIndex
+        removeRowButtonDisplay: false
       });
-    }
-  };
-
-  showButtons = () => {
-    let {
-      square,
-      buttonsVisible,
-      removeRowButtonDisplay,
-      removeColumnButtonDisplay
-    } = this.state;
-
-    if (square.length > 1) {
-      buttonsVisible = true;
-      removeRowButtonDisplay = true;
-    }
-
-    if (square[0].columns.length > 1) {
-      buttonsVisible = true;
-      removeColumnButtonDisplay = true;
-    }
-
-    if (square.length <= 1) {
-      removeRowButtonDisplay = false;
-    }
-
-    if (square[0].columns.length <= 1) {
-      removeColumnButtonDisplay = false;
     }
 
     this.setState({
-      buttonsVisible,
-      removeRowButtonDisplay,
-      removeColumnButtonDisplay
+      rows: cloneRows,
+      removeRowButtonTop,
+      currentRowIndex
     });
+  };
+
+  showButtons = () => {
+    const { rows, columns } = this.state;
+
+    if (rows.length > 1) {
+      this.setState({
+        buttonsVisible: true,
+        removeRowButtonDisplay: true
+      });
+    }
+
+    if (columns.length > 1) {
+      this.setState({
+        buttonsVisible: true,
+        removeColumnButtonDisplay: true
+      });
+    }
   };
 
   hideButtons = () => {
@@ -362,30 +355,33 @@ export default class Square extends React.Component {
     const { cellSize } = this.props;
 
     const {
-      square,
+      rows,
+      columns,
       buttonsVisible,
       removeRowButtonDisplay,
       removeColumnButtonDisplay,
       removeRowButtonTop,
       removeColumnButtonLeft,
-      containerPosition
+      containerLeft,
+      containerTop
     } = this.state;
 
     return (
       <Wrapper onMouseMove={this.onDragging} onMouseUp={this.onDragEnd}>
         <Container
           ref={this.containerRef}
-          containerPosition={containerPosition}
+          containerLeft={containerLeft}
+          containerTop={containerTop}
           cellSize={cellSize}
           onMouseOver={this.movingButtons}
         >
           <div onMouseEnter={this.showButtons} onMouseLeave={this.hideButtons}>
             <Table onMouseDown={this.onDragStart} onDragStart={() => false}>
               <tbody>
-                {square.map((row, index) => (
-                  <tr key={`row-${index}`}>
-                    {row.columns.map((cell, index) => (
-                      <Cell key={`cell-${index}`} cellSize={cellSize} />
+                {rows.map(row => (
+                  <tr key={`row-${row.key}`}>
+                    {columns.map(cell => (
+                      <Cell key={`cell-${cell.key}`} cellSize={cellSize} />
                     ))}
                   </tr>
                 ))}
