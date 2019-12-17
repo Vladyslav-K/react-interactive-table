@@ -99,7 +99,7 @@ const RemoveRowButton = styled(RemoveButtons)`
     props.buttonsVisible === true ? "visible" : "hidden"};
   opacity: ${props => (props.buttonsVisible === true ? 1 : 0)};
 
-  top: ${props => props.removeRowButtonTop}px;
+  top: ${props => props.buttonsPoisiton.top}px;
   right: 100%;
 
   margin: 1px 2px;
@@ -113,7 +113,7 @@ const RemoveColumnButton = styled(RemoveButtons)`
   opacity: ${props => (props.buttonsVisible === true ? 1 : 0)};
 
   bottom: 100%;
-  left: ${props => props.removeColumnButtonLeft}px;
+  left: ${props => props.buttonsPoisiton.left}px;
 
   margin: 2px 1px;
 `;
@@ -128,29 +128,28 @@ export default class Square extends React.Component {
       rows: [],
       columns: [],
 
-      rowKey: 0,
-      cellKey: 0,
-
       containerPosition: {
         left: `${this.props.cellSize * 2}px`,
         top: `${this.props.cellSize * 2}px`
       },
 
-      currentCellIndex: 0,
-      currentRowIndex: 0,
+      buttonsPoisiton: {
+        left: 0,
+        top: 0
+      },
 
       buttonsVisible: false,
       removeRowButtonDisplay: true,
       removeColumnButtonDisplay: true,
-
-      removeRowButtonTop: 0,
-      removeColumnButtonLeft: 0,
 
       dragging: false
     };
 
     this.rowKey = 0;
     this.cellKey = 0;
+
+    this.currentCellIndex = 0;
+    this.currentRowIndex = 0;
 
     this.offsetX = 0;
     this.offsetY = 0;
@@ -261,25 +260,24 @@ export default class Square extends React.Component {
   };
 
   movingButtons = ({ target }) => {
-    let {
-      currentRowIndex,
-      currentCellIndex,
-      removeColumnButtonLeft,
-      removeRowButtonTop
-    } = this.state;
+    const { cellSize } = this.props;
+    const { buttonsPoisiton } = this.state;
+    const cloneButtonsPosition = { ...buttonsPoisiton };
 
     if (target.tagName === "TD") {
-      removeColumnButtonLeft = target.offsetLeft;
-      removeRowButtonTop = target.offsetTop;
-      currentCellIndex = target.cellIndex;
-      currentRowIndex = target.parentNode.rowIndex;
+      /* In this formula "2" - the padding of each cell, for the correct movement
+    of the button should be considered when calculating */
+      this.currentCellIndex = target.cellIndex;
+      this.currentRowIndex = target.parentNode.rowIndex;
+
+      cloneButtonsPosition.left =
+        cellSize * this.currentCellIndex + 2 * this.currentCellIndex;
+      cloneButtonsPosition.top =
+        cellSize * this.currentRowIndex + 2 * this.currentRowIndex;
     }
 
     this.setState({
-      currentRowIndex,
-      currentCellIndex,
-      removeColumnButtonLeft,
-      removeRowButtonTop
+      buttonsPoisiton: cloneButtonsPosition
     });
   };
 
@@ -304,8 +302,8 @@ export default class Square extends React.Component {
 
   deleteColumn = () => {
     const { cellSize } = this.props;
-    const { rows, columns } = this.state;
-    let { currentCellIndex, removeColumnButtonLeft } = this.state;
+    const { rows, columns, buttonsPoisiton } = this.state;
+    const cloneButtonsPosition = { ...buttonsPoisiton };
 
     const cloneRows = [...rows];
     const cloneColumns = [...columns];
@@ -314,16 +312,16 @@ export default class Square extends React.Component {
     const lastCellIndex = columnsLength - 1;
 
     if (columnsLength > 1) {
-      cloneColumns.splice(currentCellIndex, 1);
+      cloneColumns.splice(this.currentCellIndex, 1);
     }
 
-    if (currentCellIndex === lastCellIndex) {
+    if (this.currentCellIndex === lastCellIndex) {
       /* In this formula "2" - the padding of each cell, for the correct movement
       of the button should be considered when calculating */
-      removeColumnButtonLeft =
-        cellSize * (currentCellIndex - 1) + 2 * currentCellIndex;
+      cloneButtonsPosition.left =
+        cellSize * (this.currentCellIndex - 1) + 2 * this.currentCellIndex;
 
-      currentCellIndex--;
+      this.currentCellIndex--;
     }
 
     if (lastCellIndex <= 1) {
@@ -335,15 +333,14 @@ export default class Square extends React.Component {
     this.setState({
       rows: cloneRows,
       columns: cloneColumns,
-      removeColumnButtonLeft,
-      currentCellIndex
+      buttonsPoisiton: cloneButtonsPosition
     });
   };
 
   deleteRow = () => {
     const { cellSize } = this.props;
-    const { rows } = this.state;
-    let { currentRowIndex, removeRowButtonTop } = this.state;
+    const { rows, buttonsPoisiton } = this.state;
+    const cloneButtonsPosition = { ...buttonsPoisiton };
 
     const cloneRows = [...rows];
 
@@ -351,16 +348,16 @@ export default class Square extends React.Component {
     const lastRowIndex = rowsLength - 1;
 
     if (rowsLength > 1) {
-      cloneRows.splice(currentRowIndex, 1);
+      cloneRows.splice(this.currentRowIndex, 1);
     }
 
-    if (currentRowIndex === lastRowIndex) {
+    if (this.currentRowIndex === lastRowIndex) {
       /* In this formula "2" - the padding of each cell, for the correct movement
     of the button should be considered when calculating */
-      removeRowButtonTop =
-        cellSize * (currentRowIndex - 1) + 2 * currentRowIndex;
+      cloneButtonsPosition.top =
+        cellSize * (this.currentRowIndex - 1) + 2 * this.currentRowIndex;
 
-      currentRowIndex--;
+      this.currentRowIndex--;
     }
 
     if (lastRowIndex <= 1) {
@@ -371,8 +368,7 @@ export default class Square extends React.Component {
 
     this.setState({
       rows: cloneRows,
-      removeRowButtonTop,
-      currentRowIndex
+      buttonsPoisiton: cloneButtonsPosition
     });
   };
 
@@ -409,8 +405,7 @@ export default class Square extends React.Component {
       buttonsVisible,
       removeRowButtonDisplay,
       removeColumnButtonDisplay,
-      removeRowButtonTop,
-      removeColumnButtonLeft,
+      buttonsPoisiton,
       containerPosition
     } = this.state;
 
@@ -418,7 +413,6 @@ export default class Square extends React.Component {
       <Wrapper onMouseMove={this.onDragging} onMouseUp={this.onDragEnd}>
         <Container
           id={"container"}
-          ref={this.containerRef}
           containerPosition={containerPosition}
           cellSize={cellSize}
           onMouseOver={this.movingButtons}
@@ -441,7 +435,7 @@ export default class Square extends React.Component {
               cellSize={cellSize}
               buttonsVisible={buttonsVisible}
               removeRowButtonDisplay={removeRowButtonDisplay}
-              removeRowButtonTop={removeRowButtonTop}
+              buttonsPoisiton={buttonsPoisiton}
             >
               -
             </RemoveRowButton>
@@ -450,7 +444,7 @@ export default class Square extends React.Component {
               cellSize={cellSize}
               buttonsVisible={buttonsVisible}
               removeColumnButtonDisplay={removeColumnButtonDisplay}
-              removeColumnButtonLeft={removeColumnButtonLeft}
+              buttonsPoisiton={buttonsPoisiton}
             >
               -
             </RemoveColumnButton>
