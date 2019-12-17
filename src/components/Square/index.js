@@ -13,8 +13,6 @@ const Wrapper = styled.div`
 `;
 
 const Container = styled.div`
-  display: inline-block;
-
   position: absolute;
 
   left: ${props => props.containerPosition.left};
@@ -101,8 +99,7 @@ const RemoveRowButton = styled(RemoveButtons)`
 
   top: ${props => props.buttonsPoisiton.top}px;
   right: 100%;
-
-  margin: 1px 2px;
+  margin: 3px 2px;
 `;
 
 const RemoveColumnButton = styled(RemoveButtons)`
@@ -114,8 +111,7 @@ const RemoveColumnButton = styled(RemoveButtons)`
 
   bottom: 100%;
   left: ${props => props.buttonsPoisiton.left}px;
-
-  margin: 2px 1px;
+  margin: 2px 3px;
 `;
 
 export default class Square extends React.Component {
