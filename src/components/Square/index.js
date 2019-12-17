@@ -221,12 +221,12 @@ export default class Square extends React.Component {
     });
   };
 
-  onDrag = event => {
+  onDrag = ({ pageX, pageY }) => {
     const { dragging } = this.state;
 
     if (dragging) {
-      this.container.style.left = event.pageX - this.offsetX + "px";
-      this.container.style.top = event.pageY - this.offsetY + "px";
+      this.container.style.left = pageX - this.offsetX + "px";
+      this.container.style.top = pageY - this.offsetY + "px";
     }
   };
 
@@ -417,9 +417,13 @@ export default class Square extends React.Component {
             <Table onMouseDown={this.onDragStart} onDragStart={() => false}>
               <tbody>
                 {rows.map(row => (
-                  <tr key={`row-${row.key}`}>
+                  <tr key={`row-${row.key}`} id="row">
                     {columns.map(cell => (
-                      <Cell key={`cell-${cell.key}`} cellSize={cellSize} />
+                      <Cell
+                        key={`cell-${cell.key}`}
+                        id="cell"
+                        cellSize={cellSize}
+                      />
                     ))}
                   </tr>
                 ))}
@@ -427,6 +431,7 @@ export default class Square extends React.Component {
             </Table>
 
             <RemoveRowButton
+              id="remove-row-button"
               onClick={this.deleteRow}
               cellSize={cellSize}
               buttonsVisible={buttonsVisible}
@@ -436,6 +441,7 @@ export default class Square extends React.Component {
               -
             </RemoveRowButton>
             <RemoveColumnButton
+              id="remove-column-button"
               onClick={this.deleteColumn}
               cellSize={cellSize}
               buttonsVisible={buttonsVisible}
@@ -445,10 +451,10 @@ export default class Square extends React.Component {
               -
             </RemoveColumnButton>
           </div>
-          <AddRowButton cellSize={cellSize} onClick={this.createRow}>
+          <AddRowButton id="add-row-button" cellSize={cellSize} onClick={this.createRow}>
             +
           </AddRowButton>
-          <AddColumnButton cellSize={cellSize} onClick={this.createColumn}>
+          <AddColumnButton id="add-column-button" cellSize={cellSize} onClick={this.createColumn}>
             +
           </AddColumnButton>
         </Container>

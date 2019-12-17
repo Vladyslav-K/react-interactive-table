@@ -10,21 +10,21 @@ exports[`Render Component APP rendered 1`] = `
 
 exports[`Render Component Square rendered 1`] = `
 <styled.div
-  className="wrapper"
   onMouseMove={[Function]}
   onMouseUp={[Function]}
 >
   <styled.div
     cellSize={50}
-    className="container"
-    containerAbsolute={false}
-    containerLeft={100}
-    containerTop={100}
-    dragging={false}
+    containerPosition={
+      Object {
+        "left": "100px",
+        "top": "100px",
+      }
+    }
+    id="container"
     onMouseOver={[Function]}
   >
     <div
-      className="square-container"
       onMouseEnter={[Function]}
       onMouseLeave={[Function]}
     >
@@ -32,174 +32,150 @@ exports[`Render Component Square rendered 1`] = `
         onDragStart={[Function]}
         onMouseDown={[Function]}
       >
-        <tbody
-          className="tbody"
-        >
+        <tbody>
           <tr
-            className="row"
-            key="row-4"
+            id="row"
+            key="row-0"
           >
             <styled.td
               cellSize={50}
-              className="cell"
-              currentCellIndex={0}
-              currentRowIndex={0}
+              id="cell"
               key="cell-0"
             />
             <styled.td
               cellSize={50}
-              className="cell"
-              currentCellIndex={0}
-              currentRowIndex={0}
+              id="cell"
               key="cell-1"
             />
             <styled.td
               cellSize={50}
-              className="cell"
-              currentCellIndex={0}
-              currentRowIndex={0}
+              id="cell"
               key="cell-2"
             />
             <styled.td
               cellSize={50}
-              className="cell"
-              currentCellIndex={0}
-              currentRowIndex={0}
+              id="cell"
               key="cell-3"
             />
           </tr>
           <tr
-            className="row"
-            key="row-9"
+            id="row"
+            key="row-1"
           >
             <styled.td
               cellSize={50}
-              className="cell"
-              currentCellIndex={0}
-              currentRowIndex={0}
-              key="cell-5"
+              id="cell"
+              key="cell-0"
             />
             <styled.td
               cellSize={50}
-              className="cell"
-              currentCellIndex={0}
-              currentRowIndex={0}
-              key="cell-6"
+              id="cell"
+              key="cell-1"
             />
             <styled.td
               cellSize={50}
-              className="cell"
-              currentCellIndex={0}
-              currentRowIndex={0}
-              key="cell-7"
+              id="cell"
+              key="cell-2"
             />
             <styled.td
               cellSize={50}
-              className="cell"
-              currentCellIndex={0}
-              currentRowIndex={0}
-              key="cell-8"
+              id="cell"
+              key="cell-3"
             />
           </tr>
           <tr
-            className="row"
-            key="row-14"
+            id="row"
+            key="row-2"
           >
             <styled.td
               cellSize={50}
-              className="cell"
-              currentCellIndex={0}
-              currentRowIndex={0}
-              key="cell-10"
+              id="cell"
+              key="cell-0"
             />
             <styled.td
               cellSize={50}
-              className="cell"
-              currentCellIndex={0}
-              currentRowIndex={0}
-              key="cell-11"
+              id="cell"
+              key="cell-1"
             />
             <styled.td
               cellSize={50}
-              className="cell"
-              currentCellIndex={0}
-              currentRowIndex={0}
-              key="cell-12"
+              id="cell"
+              key="cell-2"
             />
             <styled.td
               cellSize={50}
-              className="cell"
-              currentCellIndex={0}
-              currentRowIndex={0}
-              key="cell-13"
+              id="cell"
+              key="cell-3"
             />
           </tr>
           <tr
-            className="row"
-            key="row-19"
+            id="row"
+            key="row-3"
           >
             <styled.td
               cellSize={50}
-              className="cell"
-              currentCellIndex={0}
-              currentRowIndex={0}
-              key="cell-15"
+              id="cell"
+              key="cell-0"
             />
             <styled.td
               cellSize={50}
-              className="cell"
-              currentCellIndex={0}
-              currentRowIndex={0}
-              key="cell-16"
+              id="cell"
+              key="cell-1"
             />
             <styled.td
               cellSize={50}
-              className="cell"
-              currentCellIndex={0}
-              currentRowIndex={0}
-              key="cell-17"
+              id="cell"
+              key="cell-2"
             />
             <styled.td
               cellSize={50}
-              className="cell"
-              currentCellIndex={0}
-              currentRowIndex={0}
-              key="cell-18"
+              id="cell"
+              key="cell-3"
             />
           </tr>
         </tbody>
       </styled.table>
       <Styled(Styled(styled.div))
+        buttonsPoisiton={
+          Object {
+            "left": 0,
+            "top": 0,
+          }
+        }
         buttonsVisible={false}
         cellSize={50}
-        className="remove-row-button"
+        id="remove-row-button"
         onClick={[Function]}
         removeRowButtonDisplay={true}
-        removeRowButtonTop={0}
       >
         -
       </Styled(Styled(styled.div))>
       <Styled(Styled(styled.div))
+        buttonsPoisiton={
+          Object {
+            "left": 0,
+            "top": 0,
+          }
+        }
         buttonsVisible={false}
         cellSize={50}
-        className="remove-column-button"
+        id="remove-column-button"
         onClick={[Function]}
         removeColumnButtonDisplay={true}
-        removeColumnButtonLeft={0}
       >
         -
       </Styled(Styled(styled.div))>
     </div>
     <Styled(Styled(styled.div))
       cellSize={50}
-      className="add-row-button"
+      id="add-row-button"
       onClick={[Function]}
     >
       +
     </Styled(Styled(styled.div))>
     <Styled(Styled(styled.div))
       cellSize={50}
-      className="add-column-button"
+      id="add-column-button"
       onClick={[Function]}
     >
       +
