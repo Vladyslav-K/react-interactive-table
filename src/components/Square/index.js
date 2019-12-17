@@ -8,6 +8,8 @@ const Wrapper = styled.div`
 
   margin: 0;
   padding: 0;
+
+  user-select: none;
 `;
 
 const Container = styled.div`
@@ -15,13 +17,16 @@ const Container = styled.div`
 
   position: absolute;
 
-  left: ${props => props.containerLeft}px;
-  top: ${props => props.containerTop}px;
+  left: ${props => props.containerPosition.left};
+  top: ${props => props.containerPosition.top};
+
+  user-select: none;
 `;
 
 const Table = styled.table`
   border: 1px solid #48aae6;
   cursor: grab;
+  user-select: none;
 `;
 
 const Cell = styled.td`
@@ -31,6 +36,8 @@ const Cell = styled.td`
   padding: 0;
 
   background-color: #48aae6;
+
+  user-select: none;
 `;
 
 const Button = styled.div`
@@ -53,6 +60,8 @@ const Button = styled.div`
 
   transition-duration: 0.6s;
   cursor: pointer;
+
+  user-select: none;
 
   &:hover {
     opacity: 0.8;
@@ -122,8 +131,10 @@ export default class Square extends React.Component {
       rowKey: 0,
       cellKey: 0,
 
-      containerLeft: this.props.cellSize * 2,
-      containerTop: this.props.cellSize * 2,
+      containerPosition: {
+        left: `${this.props.cellSize * 2}px`,
+        top: `${this.props.cellSize * 2}px`
+      },
 
       currentCellIndex: 0,
       currentRowIndex: 0,
@@ -135,19 +146,49 @@ export default class Square extends React.Component {
       removeRowButtonTop: 0,
       removeColumnButtonLeft: 0,
 
-      dragging: false,
-      offsetX: 0,
-      offsetY: 0
+      dragging: false
     };
 
     this.rowKey = 0;
     this.cellKey = 0;
 
-    this.containerRef = React.createRef();
+    this.offsetX = 0;
+    this.offsetY = 0;
+
+    this.onDrag = this.throttle(this.onDrag, 20);
   }
+
+  throttle = (func, ms) => {
+    let isThrottled = false,
+      savedArgs,
+      savedThis;
+
+    function wrapper() {
+      if (isThrottled) {
+        savedArgs = arguments;
+        savedThis = this;
+        return;
+      }
+
+      func.apply(this, arguments);
+
+      isThrottled = true;
+
+      setTimeout(function() {
+        isThrottled = false;
+        if (savedArgs) {
+          wrapper.apply(savedThis, savedArgs);
+          savedArgs = savedThis = null;
+        }
+      }, ms);
+    }
+
+    return wrapper;
+  };
 
   componentDidMount() {
     this.createSquare();
+    this.container = document.querySelector("#container");
   }
 
   createSquare = () => {
@@ -176,36 +217,44 @@ export default class Square extends React.Component {
     });
   };
 
-  onDragStart = ({ clientX, clientY, target }) => {
-    console.log(target.closest("table"))
-    let { offsetX, offsetY } = this.state;
-
-    offsetX = clientX - this.containerRef.current.getBoundingClientRect().left;
-    offsetY = clientY - this.containerRef.current.getBoundingClientRect().top;
+  onDragStart = ({ clientX, clientY }) => {
+    this.offsetX = clientX - this.container.getBoundingClientRect().left;
+    this.offsetY = clientY - this.container.getBoundingClientRect().top;
 
     this.setState({
-      dragging: true,
-      offsetX,
-      offsetY
+      dragging: true
     });
   };
 
-  onDragging = ({ pageX, pageY }) => {
-    const { offsetX, offsetY, dragging } = this.state;
-    let { containerLeft, containerTop } = this.state;
+  onDrag = event => {
+    const { dragging } = this.state;
 
     if (dragging) {
-      containerLeft = pageX - offsetX;
-      containerTop = pageY - offsetY;
-
-      this.setState({
-        containerLeft,
-        containerTop
-      });
+      this.container.style.left = event.pageX - this.offsetX + "px";
+      this.container.style.top = event.pageY - this.offsetY + "px";
     }
   };
 
+  onDragging = event => {
+    event.persist();
+    this.onDrag(event);
+  };
+
   onDragEnd = () => {
+    const container = this.container;
+    const containerStyle = container.style;
+
+    const cloneContainerPosition = { ...this.state.containerPosition };
+    cloneContainerPosition.left = containerStyle.left;
+    cloneContainerPosition.top = containerStyle.top;
+
+    if (containerStyle.left && containerStyle.top) {
+      this.setState({
+        containerPosition: cloneContainerPosition
+      });
+      container.removeAttribute("style");
+    }
+
     this.setState({
       dragging: false
     });
@@ -362,16 +411,15 @@ export default class Square extends React.Component {
       removeColumnButtonDisplay,
       removeRowButtonTop,
       removeColumnButtonLeft,
-      containerLeft,
-      containerTop
+      containerPosition
     } = this.state;
 
     return (
       <Wrapper onMouseMove={this.onDragging} onMouseUp={this.onDragEnd}>
         <Container
+          id={"container"}
           ref={this.containerRef}
-          containerLeft={containerLeft}
-          containerTop={containerTop}
+          containerPosition={containerPosition}
           cellSize={cellSize}
           onMouseOver={this.movingButtons}
         >
