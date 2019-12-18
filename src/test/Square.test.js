@@ -82,7 +82,7 @@ describe("Square", () => {
     SquareShallow.find('[data-test="remove-column-button"]').simulate("click");
 
     expect(SquareShallow.find('[data-test="cell"]')).toHaveLength(
-      initialHeight * initialWidth - initialWidth
+      (initialWidth - 1) * initialHeight
     );
   });
 
