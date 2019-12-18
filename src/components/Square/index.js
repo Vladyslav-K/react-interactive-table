@@ -328,11 +328,11 @@ export default class Square extends React.Component {
             <Table onMouseDown={this.onDragStart} onDragStart={() => false}>
               <tbody>
                 {rows.map(row => (
-                  <tr key={`row-${row}`} id="row">
+                  <tr key={`row-${row}`} data-test="row">
                     {columns.map(cell => (
                       <Cell
+                        data-test="cell"
                         key={`cell-${cell}`}
-                        id="cell"
                         cellSize={cellSize}
                       />
                     ))}
@@ -343,7 +343,7 @@ export default class Square extends React.Component {
 
             {removeRowButtonDisplay && (
               <RemoveRowButton
-                id="remove-row-button"
+                data-test="remove-row-button"
                 onClick={this.deleteRow}
                 cellSize={cellSize}
                 currentRowIndex={currentRowIndex}
@@ -355,7 +355,7 @@ export default class Square extends React.Component {
 
             {removeColumnButtonDisplay && (
               <RemoveColumnButton
-                id="remove-column-button"
+                data-test="remove-column-button"
                 onClick={this.deleteColumn}
                 cellSize={cellSize}
                 currentCellIndex={currentCellIndex}
@@ -366,14 +366,14 @@ export default class Square extends React.Component {
             )}
           </div>
           <AddRowButton
-            id="add-row-button"
+            data-test="add-row-button"
             cellSize={cellSize}
             onClick={this.createRow}
           >
             +
           </AddRowButton>
           <AddColumnButton
-            id="add-column-button"
+            data-test="add-column-button"
             cellSize={cellSize}
             onClick={this.createColumn}
           >

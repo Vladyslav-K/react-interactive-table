@@ -1,27 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Render Component APP rendered 1`] = `
-<Square
+<styled.div
   cellSize={50}
   initialHeight={4}
   initialWidth={4}
-/>
+>
+  <Square
+    cellSize={50}
+    initialHeight={4}
+    initialWidth={4}
+  />
+  <Square
+    cellSize={50}
+    initialHeight={4}
+    initialWidth={4}
+  />
+</styled.div>
 `;
 
 exports[`Render Component Square rendered 1`] = `
-<styled.div
-  onMouseMove={[Function]}
-  onMouseUp={[Function]}
->
+<styled.div>
   <styled.div
-    cellSize={50}
-    containerPosition={
-      Object {
-        "left": "100px",
-        "top": "100px",
-      }
-    }
-    id="container"
     onMouseOver={[Function]}
   >
     <div
@@ -34,131 +34,121 @@ exports[`Render Component Square rendered 1`] = `
       >
         <tbody>
           <tr
-            id="row"
-            key="row-0"
+            data-test="row"
+            key="row-4"
           >
             <styled.td
               cellSize={50}
-              id="cell"
+              data-test="cell"
               key="cell-0"
             />
             <styled.td
               cellSize={50}
-              id="cell"
+              data-test="cell"
               key="cell-1"
             />
             <styled.td
               cellSize={50}
-              id="cell"
+              data-test="cell"
               key="cell-2"
             />
             <styled.td
               cellSize={50}
-              id="cell"
+              data-test="cell"
               key="cell-3"
             />
           </tr>
           <tr
-            id="row"
-            key="row-1"
+            data-test="row"
+            key="row-5"
           >
             <styled.td
               cellSize={50}
-              id="cell"
+              data-test="cell"
               key="cell-0"
             />
             <styled.td
               cellSize={50}
-              id="cell"
+              data-test="cell"
               key="cell-1"
             />
             <styled.td
               cellSize={50}
-              id="cell"
+              data-test="cell"
               key="cell-2"
             />
             <styled.td
               cellSize={50}
-              id="cell"
+              data-test="cell"
               key="cell-3"
             />
           </tr>
           <tr
-            id="row"
-            key="row-2"
+            data-test="row"
+            key="row-6"
           >
             <styled.td
               cellSize={50}
-              id="cell"
+              data-test="cell"
               key="cell-0"
             />
             <styled.td
               cellSize={50}
-              id="cell"
+              data-test="cell"
               key="cell-1"
             />
             <styled.td
               cellSize={50}
-              id="cell"
+              data-test="cell"
               key="cell-2"
             />
             <styled.td
               cellSize={50}
-              id="cell"
+              data-test="cell"
               key="cell-3"
             />
           </tr>
           <tr
-            id="row"
-            key="row-3"
+            data-test="row"
+            key="row-7"
           >
             <styled.td
               cellSize={50}
-              id="cell"
+              data-test="cell"
               key="cell-0"
             />
             <styled.td
               cellSize={50}
-              id="cell"
+              data-test="cell"
               key="cell-1"
             />
             <styled.td
               cellSize={50}
-              id="cell"
+              data-test="cell"
               key="cell-2"
             />
             <styled.td
               cellSize={50}
-              id="cell"
+              data-test="cell"
               key="cell-3"
             />
           </tr>
         </tbody>
       </styled.table>
       <Styled(Styled(styled.div))
-        buttonsPosition={
-          Object {
-            "left": 0,
-            "top": 0,
-          }
-        }
         buttonsVisible={false}
         cellSize={50}
-        id="remove-row-button"
+        currentRowIndex={0}
+        data-test="remove-row-button"
         onClick={[Function]}
       >
         -
       </Styled(Styled(styled.div))>
       <Styled(Styled(styled.div))
-        buttonsPosition={
-          Object {
-            "left": 0,
-            "top": 0,
-          }
-        }
         buttonsVisible={false}
         cellSize={50}
-        id="remove-column-button"
+        currentCellIndex={0}
+        data-test="remove-column-button"
         onClick={[Function]}
       >
         -
@@ -166,14 +156,14 @@ exports[`Render Component Square rendered 1`] = `
     </div>
     <Styled(Styled(styled.div))
       cellSize={50}
-      id="add-row-button"
+      data-test="add-row-button"
       onClick={[Function]}
     >
       +
     </Styled(Styled(styled.div))>
     <Styled(Styled(styled.div))
       cellSize={50}
-      id="add-column-button"
+      data-test="add-column-button"
       onClick={[Function]}
     >
       +

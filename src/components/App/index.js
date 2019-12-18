@@ -10,9 +10,9 @@ const GlobalContainer = styled.div`
 
 function App() {
   return (
-    <GlobalContainer>
-      <Square initialWidth={4} initialHeight={4} cellSize={50} />
-      <Square initialWidth={4} initialHeight={4} cellSize={50} />
+    <GlobalContainer initialWidth={4} initialHeight={4} cellSize={50}>
+      <Square />
+      <Square />
     </GlobalContainer>
   );
 }
