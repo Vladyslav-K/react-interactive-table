@@ -72,8 +72,8 @@ const AddButtons = styled(Button)`
 `;
 
 const RemoveButtons = styled(Button)`
-  display: block;
   visibility: hidden;
+  opacity: 0;
 
   background-color: #b20000;
 
@@ -91,8 +91,6 @@ const AddColumnButton = styled(AddButtons)`
 `;
 
 const RemoveRowButton = styled(RemoveButtons)`
-  display: ${props =>
-    props.removeRowButtonDisplay === true ? "block" : "none"};
   visibility: ${props =>
     props.buttonsVisible === true ? "visible" : "hidden"};
   opacity: ${props => (props.buttonsVisible === true ? 1 : 0)};
@@ -103,8 +101,6 @@ const RemoveRowButton = styled(RemoveButtons)`
 `;
 
 const RemoveColumnButton = styled(RemoveButtons)`
-  display: ${props =>
-    props.removeColumnButtonDisplay === true ? "block" : "none"};
   visibility: ${props =>
     props.buttonsVisible === true ? "visible" : "hidden"};
   opacity: ${props => (props.buttonsVisible === true ? 1 : 0)};
@@ -119,8 +115,6 @@ export default class Square extends React.Component {
     super(props);
 
     this.state = {
-      square: [],
-
       rows: [],
       columns: [],
 
@@ -184,6 +178,7 @@ export default class Square extends React.Component {
   componentDidMount() {
     this.createSquare();
     this.container = document.querySelector("#container");
+    console.log("Version 0.28. Created at 18.11.2019, 02:10");
   }
 
   createSquare = () => {
@@ -288,8 +283,7 @@ export default class Square extends React.Component {
 
   createRow = () => {
     const { rows, columns } = this.state;
-    const cloneColumns = [...columns];
-    const cloneRows = [...rows, { key: this.rowKey++, columns: cloneColumns }];
+    const cloneRows = [...rows, { key: this.rowKey++, columns }];
 
     this.setState({
       rows: cloneRows
@@ -430,26 +424,29 @@ export default class Square extends React.Component {
               </tbody>
             </Table>
 
-            <RemoveRowButton
-              id="remove-row-button"
-              onClick={this.deleteRow}
-              cellSize={cellSize}
-              buttonsVisible={buttonsVisible}
-              removeRowButtonDisplay={removeRowButtonDisplay}
-              buttonsPosition={buttonsPosition}
-            >
-              -
-            </RemoveRowButton>
-            <RemoveColumnButton
-              id="remove-column-button"
-              onClick={this.deleteColumn}
-              cellSize={cellSize}
-              buttonsVisible={buttonsVisible}
-              removeColumnButtonDisplay={removeColumnButtonDisplay}
-              buttonsPosition={buttonsPosition}
-            >
-              -
-            </RemoveColumnButton>
+            {removeRowButtonDisplay && (
+              <RemoveRowButton
+                id="remove-row-button"
+                onClick={this.deleteRow}
+                cellSize={cellSize}
+                buttonsVisible={buttonsVisible}
+                buttonsPosition={buttonsPosition}
+              >
+                -
+              </RemoveRowButton>
+            )}
+
+            {removeColumnButtonDisplay && (
+              <RemoveColumnButton
+                id="remove-column-button"
+                onClick={this.deleteColumn}
+                cellSize={cellSize}
+                buttonsVisible={buttonsVisible}
+                buttonsPosition={buttonsPosition}
+              >
+                -
+              </RemoveColumnButton>
+            )}
           </div>
           <AddRowButton
             id="add-row-button"
