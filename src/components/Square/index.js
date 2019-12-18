@@ -153,28 +153,22 @@ export default class Square extends React.Component {
   }
 
   createSquare = () => {
-    const { rows, columns } = this.state;
-    const cloneRows = [...rows];
-    const cloneColumns = [...columns];
+    const newRows = [];
+    const newColumns = [];
 
     const { initialHeight, initialWidth } = this.props;
 
     for (let cells = 0; cells < initialWidth; cells++) {
-      cloneColumns[cells] = {
-        key: this.uniqueKey++
-      };
+      newColumns[cells] = this.uniqueKey++;
     }
 
     for (let rows = 0; rows < initialHeight; rows++) {
-      cloneRows[rows] = {
-        key: this.uniqueKey++,
-        columns: cloneColumns
-      };
+      newRows[rows] = this.uniqueKey++;
     }
 
     this.setState({
-      rows: cloneRows,
-      columns: cloneColumns
+      rows: newRows,
+      columns: newColumns
     });
   };
 
@@ -207,8 +201,10 @@ export default class Square extends React.Component {
   };
 
   onDragStart = ({ clientX, clientY }) => {
-    this.offsetX = clientX - this.containerRef.current.getBoundingClientRect().left;
-    this.offsetY = clientY - this.containerRef.current.getBoundingClientRect().top;
+    this.offsetX =
+      clientX - this.containerRef.current.getBoundingClientRect().left;
+    this.offsetY =
+      clientY - this.containerRef.current.getBoundingClientRect().top;
 
     this.setState({
       dragging: true
@@ -273,7 +269,7 @@ export default class Square extends React.Component {
 
   createColumn = () => {
     const { columns } = this.state;
-    const cloneColumns = [...columns, { key: this.uniqueKey++ }];
+    const cloneColumns = [...columns, this.uniqueKey++];
 
     this.setState({
       columns: cloneColumns
@@ -281,8 +277,8 @@ export default class Square extends React.Component {
   };
 
   createRow = () => {
-    const { rows, columns } = this.state;
-    const cloneRows = [...rows, { key: this.uniqueKey++, columns }];
+    const { rows } = this.state;
+    const cloneRows = [...rows, this.uniqueKey++];
 
     this.setState({
       rows: cloneRows
@@ -410,10 +406,10 @@ export default class Square extends React.Component {
             <Table onMouseDown={this.onDragStart} onDragStart={() => false}>
               <tbody>
                 {rows.map(row => (
-                  <tr key={`row-${row.key}`} id="row">
+                  <tr key={`row-${row}`} id="row">
                     {columns.map(cell => (
                       <Cell
-                        key={`cell-${cell.key}`}
+                        key={`cell-${cell}`}
                         id="cell"
                         cellSize={cellSize}
                       />
