@@ -135,6 +135,8 @@ export default class Square extends React.Component {
       dragging: false
     };
 
+    this.containerRef = React.createRef();
+
     this.rowKey = 0;
     this.cellKey = 0;
 
@@ -146,6 +148,36 @@ export default class Square extends React.Component {
 
     this.onDrag = this.throttle(this.onDrag, 20);
   }
+
+  componentDidMount() {
+    this.createSquare();
+  }
+
+  createSquare = () => {
+    const { rows, columns } = this.state;
+    const cloneRows = [...rows];
+    const cloneColumns = [...columns];
+
+    const { initialHeight, initialWidth } = this.props;
+
+    for (let cells = 0; cells < initialWidth; cells++) {
+      cloneColumns[cells] = {
+        key: this.cellKey++
+      };
+    }
+
+    for (let rows = 0; rows < initialHeight; rows++) {
+      cloneRows[rows] = {
+        key: this.rowKey++,
+        columns: cloneColumns
+      };
+    }
+
+    this.setState({
+      rows: cloneRows,
+      columns: cloneColumns
+    });
+  };
 
   throttle = (func, ms) => {
     let isThrottled = false,
@@ -175,40 +207,9 @@ export default class Square extends React.Component {
     return wrapper;
   };
 
-  componentDidMount() {
-    this.createSquare();
-    this.container = document.querySelector("#container");
-  }
-
-  createSquare = () => {
-    const { rows, columns } = this.state;
-    const cloneRows = [...rows];
-    const cloneColumns = [...columns];
-
-    const { initialHeight, initialWidth } = this.props;
-
-    for (let cells = 0; cells < initialWidth; cells++) {
-      cloneColumns[cells] = {
-        key: this.cellKey++
-      };
-    }
-
-    for (let rows = 0; rows < initialHeight; rows++) {
-      cloneRows[rows] = {
-        key: this.rowKey++,
-        columns: cloneColumns
-      };
-    }
-
-    this.setState({
-      rows: cloneRows,
-      columns: cloneColumns
-    });
-  };
-
   onDragStart = ({ clientX, clientY }) => {
-    this.offsetX = clientX - this.container.getBoundingClientRect().left;
-    this.offsetY = clientY - this.container.getBoundingClientRect().top;
+    this.offsetX = clientX - this.containerRef.current.getBoundingClientRect().left;
+    this.offsetY = clientY - this.containerRef.current.getBoundingClientRect().top;
 
     this.setState({
       dragging: true
@@ -219,8 +220,8 @@ export default class Square extends React.Component {
     const { dragging } = this.state;
 
     if (dragging) {
-      this.container.style.left = pageX - this.offsetX + "px";
-      this.container.style.top = pageY - this.offsetY + "px";
+      this.containerRef.current.style.left = pageX - this.offsetX + "px";
+      this.containerRef.current.style.top = pageY - this.offsetY + "px";
     }
   };
 
@@ -230,7 +231,7 @@ export default class Square extends React.Component {
   };
 
   onDragEnd = () => {
-    const container = this.container;
+    const container = this.containerRef.current;
     const containerStyle = container.style;
 
     const cloneContainerPosition = { ...this.state.containerPosition };
@@ -401,7 +402,7 @@ export default class Square extends React.Component {
     return (
       <Wrapper onMouseMove={this.onDragging} onMouseUp={this.onDragEnd}>
         <Container
-          id={"container"}
+          ref={this.containerRef}
           containerPosition={containerPosition}
           cellSize={cellSize}
           onMouseOver={this.movingButtons}
