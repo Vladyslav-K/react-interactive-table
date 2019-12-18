@@ -22,7 +22,8 @@ const Table = styled.table`
 
 const Cell = styled.td`
   height: ${({ cellSize }) => cellSize}px;
-  width: ${({ cellSize }) => cellSize}px;
+  min-width: ${({ cellSize }) => cellSize}px;
+  min-height: ${({ cellSize }) => cellSize}px;
 
   padding: 0;
 
