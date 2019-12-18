@@ -1,11 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Render Component APP rendered 1`] = `
-<styled.div
-  cellSize={50}
-  initialHeight={4}
-  initialWidth={4}
->
+<styled.div>
   <Square
     cellSize={50}
     initialHeight={4}

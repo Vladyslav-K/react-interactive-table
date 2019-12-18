@@ -70,8 +70,6 @@ const RemoveButtons = styled(Button)`
   opacity: 0;
 
   background-color: #b20000;
-
-  line-height: ${({ cellSize }) => cellSize - cellSize / 5}px;
 `;
 
 const AddRowButton = styled(AddButtons)`
@@ -357,12 +355,6 @@ export default class Square extends React.Component {
     );
   }
 }
-
-Square.defaultProps = {
-  cellSize: 50,
-  initialHeight: 4,
-  initialWidth: 4
-};
 
 Square.propTypes = {
   cellSize: PropTypes.number.isRequired,

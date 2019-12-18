@@ -22,17 +22,19 @@ describe("Render", () => {
 
 describe("Square", () => {
   it("Correct initial height", () => {
-    const SquareShallow = shallow(<Square />);
-    const AppShallow = shallow(<App />);
-    const { initialHeight } = AppShallow.props();
+    const SquareShallow = shallow(
+      <Square initialWidth={4} initialHeight={4} cellSize={50} />
+    );
+    const { initialHeight } = SquareShallow.instance().props;
 
     expect(SquareShallow.find('[data-test="row"]')).toHaveLength(initialHeight);
   });
 
   it("Correct initial width", () => {
-    const SquareShallow = shallow(<Square />);
-    const AppShallow = shallow(<App />);
-    const { initialWidth, initialHeight } = AppShallow.props();
+    const SquareShallow = shallow(
+      <Square initialWidth={4} initialHeight={4} cellSize={50} />
+    );
+    const { initialWidth, initialHeight } = SquareShallow.instance().props;
 
     expect(SquareShallow.find('[data-test="cell"]')).toHaveLength(
       initialWidth * initialHeight
@@ -40,20 +42,23 @@ describe("Square", () => {
   });
 
   it("Clicking on the addRowButton creates a row", () => {
-    const SquareShallow = shallow(<Square />);
-    const AppShallow = shallow(<App />);
-    const { initialHeight } = AppShallow.props();
+    const SquareShallow = shallow(
+      <Square initialWidth={4} initialHeight={4} cellSize={50} />
+    );
+    const { initialHeight } = SquareShallow.instance().props;
 
     SquareShallow.find('[data-test="add-row-button"]').simulate("click");
+
     expect(SquareShallow.find('[data-test="row"]')).toHaveLength(
       initialHeight + 1
     );
   });
 
   it("Clicking on the addColumnButton creates a column", () => {
-    const SquareShallow = shallow(<Square />);
-    const AppShallow = shallow(<App />);
-    const { initialWidth, initialHeight } = AppShallow.props();
+    const SquareShallow = shallow(
+      <Square initialWidth={4} initialHeight={4} cellSize={50} />
+    );
+    const { initialWidth, initialHeight } = SquareShallow.instance().props;
 
     SquareShallow.find('[data-test="add-column-button"]').simulate("click");
 
@@ -63,9 +68,10 @@ describe("Square", () => {
   });
 
   it("Clicking on the removeRowButton deletes a row", () => {
-    const SquareShallow = shallow(<Square />);
-    const AppShallow = shallow(<App />);
-    const { initialHeight } = AppShallow.props();
+    const SquareShallow = shallow(
+      <Square initialWidth={4} initialHeight={4} cellSize={50} />
+    );
+    const { initialHeight } = SquareShallow.instance().props;
 
     SquareShallow.find('[data-test="remove-row-button"]').simulate("click");
 
@@ -75,9 +81,10 @@ describe("Square", () => {
   });
 
   it("Clicking on the removeColumnButton deletes a column", () => {
-    const SquareShallow = shallow(<Square />);
-    const AppShallow = shallow(<App />);
-    const { initialWidth, initialHeight } = AppShallow.props();
+    const SquareShallow = shallow(
+      <Square initialWidth={4} initialHeight={4} cellSize={50} />
+    );
+    const { initialWidth, initialHeight } = SquareShallow.instance().props;
 
     SquareShallow.find('[data-test="remove-column-button"]').simulate("click");
 
@@ -93,7 +100,7 @@ describe("Square", () => {
 
     OneCellSquare.find('[data-test="remove-row-button"]').simulate("click");
 
-    expect(OneCellSquare.find('[data-test="row"]')).toHaveLength(1);
+    expect(OneCellSquare.find('[data-test="row"]').exists()).toEqual(true);
   });
 
   it("removeColumnButton does not delete column if last", () => {
@@ -103,6 +110,6 @@ describe("Square", () => {
 
     OneCellSquare.find('[data-test="remove-column-button"]').simulate("click");
 
-    expect(OneCellSquare.find('[data-test="cell"]')).toHaveLength(1);
+    expect(OneCellSquare.find('[data-test="cell"]').exists()).toEqual(true);
   });
 });
