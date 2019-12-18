@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "5488f253068daa0fd3388e5f5d1123e9",
+    "revision": "49f5891085f374f986b56a1bdec7329e",
     "url": "/react-interactive-table/index.html"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/react-interactive-table/static/js/2.c9effe17.chunk.js.LICENSE"
   },
   {
-    "revision": "22c08be39a29fb3bf3e6",
-    "url": "/react-interactive-table/static/js/main.d5169881.chunk.js"
+    "revision": "7a379ecf26db5e276362",
+    "url": "/react-interactive-table/static/js/main.8f20b950.chunk.js"
   },
   {
     "revision": "92ae3e59c880fe99c787",
