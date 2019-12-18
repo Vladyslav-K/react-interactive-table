@@ -137,8 +137,7 @@ export default class Square extends React.Component {
 
     this.containerRef = React.createRef();
 
-    this.rowKey = 0;
-    this.cellKey = 0;
+    this.uniqueKey = 0;
 
     this.currentCellIndex = 0;
     this.currentRowIndex = 0;
@@ -162,13 +161,13 @@ export default class Square extends React.Component {
 
     for (let cells = 0; cells < initialWidth; cells++) {
       cloneColumns[cells] = {
-        key: this.cellKey++
+        key: this.uniqueKey++
       };
     }
 
     for (let rows = 0; rows < initialHeight; rows++) {
       cloneRows[rows] = {
-        key: this.rowKey++,
+        key: this.uniqueKey++,
         columns: cloneColumns
       };
     }
@@ -274,7 +273,7 @@ export default class Square extends React.Component {
 
   createColumn = () => {
     const { columns } = this.state;
-    const cloneColumns = [...columns, { key: this.cellKey++ }];
+    const cloneColumns = [...columns, { key: this.uniqueKey++ }];
 
     this.setState({
       columns: cloneColumns
@@ -283,7 +282,7 @@ export default class Square extends React.Component {
 
   createRow = () => {
     const { rows, columns } = this.state;
-    const cloneRows = [...rows, { key: this.rowKey++, columns }];
+    const cloneRows = [...rows, { key: this.uniqueKey++, columns }];
 
     this.setState({
       rows: cloneRows
