@@ -136,7 +136,7 @@ exports[`Render Component Square rendered 1`] = `
         </tbody>
       </styled.table>
       <Styled(Styled(styled.div))
-        buttonsPoisiton={
+        buttonsPosition={
           Object {
             "left": 0,
             "top": 0,
@@ -146,12 +146,11 @@ exports[`Render Component Square rendered 1`] = `
         cellSize={50}
         id="remove-row-button"
         onClick={[Function]}
-        removeRowButtonDisplay={true}
       >
         -
       </Styled(Styled(styled.div))>
       <Styled(Styled(styled.div))
-        buttonsPoisiton={
+        buttonsPosition={
           Object {
             "left": 0,
             "top": 0,
@@ -161,7 +160,6 @@ exports[`Render Component Square rendered 1`] = `
         cellSize={50}
         id="remove-column-button"
         onClick={[Function]}
-        removeColumnButtonDisplay={true}
       >
         -
       </Styled(Styled(styled.div))>

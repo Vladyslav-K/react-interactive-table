@@ -178,7 +178,6 @@ export default class Square extends React.Component {
   componentDidMount() {
     this.createSquare();
     this.container = document.querySelector("#container");
-    console.log("Version 0.28. Created at 18.11.2019, 02:10");
   }
 
   createSquare = () => {
