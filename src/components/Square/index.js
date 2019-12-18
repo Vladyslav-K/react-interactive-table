@@ -2,11 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+
+  user-select: none;
+`;
+
 const Container = styled.div`
   position: absolute;
-
-  margin: 100px;
-  
   user-select: none;
 `;
 
@@ -198,7 +202,6 @@ export default class Square extends React.Component {
     if (dragging) {
       this.containerRef.current.style.left = pageX - this.offsetX + "px";
       this.containerRef.current.style.top = pageY - this.offsetY + "px";
-      this.containerRef.current.style.margin = 0;
     }
   };
 
@@ -319,65 +322,65 @@ export default class Square extends React.Component {
     } = this.state;
 
     return (
-      <Container
-        ref={this.containerRef}
-        currentRowIndex={currentRowIndex}
-        currentCellIndex={currentCellIndex}
-        cellSize={cellSize}
-        onMouseOver={this.movingButtons}
-      >
-        <div onMouseEnter={this.showButtons} onMouseLeave={this.hideButtons}>
-          <Table onMouseDown={this.onDragStart} onDragStart={() => false}>
-            <tbody>
-              {rows.map(row => (
-                <tr key={`row-${row}`} id="row">
-                  {columns.map(cell => (
-                    <Cell key={`cell-${cell}`} id="cell" cellSize={cellSize} />
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+      <Wrapper>
+        <Container ref={this.containerRef} onMouseOver={this.movingButtons}>
+          <div onMouseEnter={this.showButtons} onMouseLeave={this.hideButtons}>
+            <Table onMouseDown={this.onDragStart} onDragStart={() => false}>
+              <tbody>
+                {rows.map(row => (
+                  <tr key={`row-${row}`} id="row">
+                    {columns.map(cell => (
+                      <Cell
+                        key={`cell-${cell}`}
+                        id="cell"
+                        cellSize={cellSize}
+                      />
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
 
-          {removeRowButtonDisplay && (
-            <RemoveRowButton
-              id="remove-row-button"
-              onClick={this.deleteRow}
-              cellSize={cellSize}
-              currentRowIndex={currentRowIndex}
-              buttonsVisible={buttonsVisible}
-            >
-              -
-            </RemoveRowButton>
-          )}
+            {removeRowButtonDisplay && (
+              <RemoveRowButton
+                id="remove-row-button"
+                onClick={this.deleteRow}
+                cellSize={cellSize}
+                currentRowIndex={currentRowIndex}
+                buttonsVisible={buttonsVisible}
+              >
+                -
+              </RemoveRowButton>
+            )}
 
-          {removeColumnButtonDisplay && (
-            <RemoveColumnButton
-              id="remove-column-button"
-              onClick={this.deleteColumn}
-              cellSize={cellSize}
-              currentCellIndex={currentCellIndex}
-              buttonsVisible={buttonsVisible}
-            >
-              -
-            </RemoveColumnButton>
-          )}
-        </div>
-        <AddRowButton
-          id="add-row-button"
-          cellSize={cellSize}
-          onClick={this.createRow}
-        >
-          +
-        </AddRowButton>
-        <AddColumnButton
-          id="add-column-button"
-          cellSize={cellSize}
-          onClick={this.createColumn}
-        >
-          +
-        </AddColumnButton>
-      </Container>
+            {removeColumnButtonDisplay && (
+              <RemoveColumnButton
+                id="remove-column-button"
+                onClick={this.deleteColumn}
+                cellSize={cellSize}
+                currentCellIndex={currentCellIndex}
+                buttonsVisible={buttonsVisible}
+              >
+                -
+              </RemoveColumnButton>
+            )}
+          </div>
+          <AddRowButton
+            id="add-row-button"
+            cellSize={cellSize}
+            onClick={this.createRow}
+          >
+            +
+          </AddRowButton>
+          <AddColumnButton
+            id="add-column-button"
+            cellSize={cellSize}
+            onClick={this.createColumn}
+          >
+            +
+          </AddColumnButton>
+        </Container>
+      </Wrapper>
     );
   }
 }
