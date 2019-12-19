@@ -193,19 +193,17 @@ export default class Square extends React.Component {
 
   createColumn = () => {
     const { columns } = this.state;
-    const cloneColumns = [...columns, this.uniqueKey++];
 
     this.setState({
-      columns: cloneColumns
+      columns: columns.concat(this.uniqueKey++)
     });
   };
 
   createRow = () => {
     const { rows } = this.state;
-    const cloneRows = [...rows, this.uniqueKey++];
 
     this.setState({
-      rows: cloneRows
+      rows: rows.concat(this.uniqueKey++)
     });
   };
 
