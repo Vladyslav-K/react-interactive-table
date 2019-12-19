@@ -243,8 +243,7 @@ export default class Square extends React.Component {
     const { rows, columns } = this.state;
 
     this.setState({
-      buttonsVisible:
-        rows.length > 1 ? true : columns.length > 1 ? true : false,
+      buttonsVisible: rows.length > 1 || columns.length > 1 ? true : false,
 
       removeRowButtonDisplay: rows.length > 1 ? true : false,
 
