@@ -205,64 +205,51 @@ export default class Square extends React.Component {
     const { currentCellIndex, columns } = this.state;
     const lastCellIndex = columns.length - 1;
 
-    if (columns.length > 1) {
-      this.setState({
-        columns: columns.filter((column, index) => index !== currentCellIndex)
-      });
-    }
+    this.setState(prevState => ({
+      removeColumnButtonDisplay: lastCellIndex <= 1 ? false : true,
 
-    if (currentCellIndex === lastCellIndex) {
-      this.setState(prevState => ({
-        currentCellIndex: prevState.currentCellIndex - 1
-      }));
-    }
+      columns:
+        columns.length > 1
+          ? prevState.columns.filter((cell, idx) => idx !== currentCellIndex)
+          : prevState.columns,
 
-    if (lastCellIndex <= 1) {
-      this.setState({
-        removeColumnButtonDisplay: false
-      });
-    }
+      currentCellIndex:
+        currentCellIndex === lastCellIndex
+          ? prevState.currentCellIndex - 1
+          : prevState.currentCellIndex
+    }));
   };
 
   deleteRow = () => {
     const { currentRowIndex, rows } = this.state;
     const lastRowIndex = rows.length - 1;
 
-    if (rows.length > 1) {
-      this.setState({
-        rows: rows.filter((row, index) => index !== currentRowIndex)
-      });
-    }
+    this.setState(prevState => ({
+      removeRowButtonDisplay: lastRowIndex <= 1 ? false : true,
 
-    if (currentRowIndex === lastRowIndex) {
-      this.setState(prevState => ({
-        currentRowIndex: prevState.currentRowIndex - 1
-      }));
-    }
+      rows:
+        rows.length > 1
+          ? prevState.rows.filter((row, idx) => idx !== currentRowIndex)
+          : prevState.rows,
 
-    if (lastRowIndex <= 1) {
-      this.setState({
-        removeRowButtonDisplay: false
-      });
-    }
+      currentRowIndex:
+        currentRowIndex === lastRowIndex
+          ? prevState.currentRowIndex - 1
+          : prevState.currentRowIndex
+    }));
   };
 
   showButtons = () => {
     const { rows, columns } = this.state;
 
-    if (rows.length > 1) {
-      this.setState({
-        buttonsVisible: true,
-        removeRowButtonDisplay: true
-      });
-    }
+    this.setState({
+      buttonsVisible:
+        rows.length > 1 ? true : columns.length > 1 ? true : false,
 
-    if (columns.length > 1) {
-      this.setState({
-        buttonsVisible: true,
-        removeColumnButtonDisplay: true
-      });
-    }
+      removeRowButtonDisplay: rows.length > 1 ? true : false,
+
+      removeColumnButtonDisplay: columns.length > 1 ? true : false
+    });
   };
 
   hideButtons = () => {
