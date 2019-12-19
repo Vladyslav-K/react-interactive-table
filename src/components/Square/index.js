@@ -117,9 +117,7 @@ export default class Square extends React.Component {
 
       buttonsVisible: false,
       removeRowButtonDisplay: true,
-      removeColumnButtonDisplay: true,
-
-      dragging: false
+      removeColumnButtonDisplay: true
     };
 
     this.containerRef = React.createRef();
@@ -132,8 +130,12 @@ export default class Square extends React.Component {
 
   componentDidMount() {
     this.createSquare();
-    document.addEventListener("mousemove", event => this.onDragging(event));
-    document.addEventListener("mouseup", () => this.onDragEnd());
+    document.addEventListener("mouseup", this.onDragEnd);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("mouseup", this.onDragEnd);
+    document.removeEventListener("mousemove", this.onDragging);
   }
 
   createSquare = () => {
@@ -157,29 +159,21 @@ export default class Square extends React.Component {
   };
 
   onDragStart = ({ clientX, clientY }) => {
+    document.addEventListener("mousemove", this.onDragging);
+
     this.offsetX =
       clientX - this.containerRef.current.getBoundingClientRect().left;
     this.offsetY =
       clientY - this.containerRef.current.getBoundingClientRect().top;
-
-    this.setState({
-      dragging: true
-    });
   };
 
   onDragging = ({ pageX, pageY }) => {
-    const { dragging } = this.state;
-
-    if (dragging) {
-      this.containerRef.current.style.left = pageX - this.offsetX + "px";
-      this.containerRef.current.style.top = pageY - this.offsetY + "px";
-    }
+    this.containerRef.current.style.left = pageX - this.offsetX + "px";
+    this.containerRef.current.style.top = pageY - this.offsetY + "px";
   };
 
   onDragEnd = () => {
-    this.setState({
-      dragging: false
-    });
+    document.removeEventListener("mousemove", this.onDragging);
   };
 
   movingButtons = ({ target }) => {
