@@ -206,7 +206,7 @@ export default class Square extends React.Component {
     const lastCellIndex = columns.length - 1;
 
     this.setState(prevState => ({
-      removeColumnButtonDisplay: lastCellIndex <= 1 ? false : true,
+      removeColumnButtonDisplay: lastCellIndex > 1,
 
       columns:
         columns.length > 1
@@ -225,7 +225,7 @@ export default class Square extends React.Component {
     const lastRowIndex = rows.length - 1;
 
     this.setState(prevState => ({
-      removeRowButtonDisplay: lastRowIndex <= 1 ? false : true,
+      removeRowButtonDisplay: lastRowIndex > 1,
 
       rows:
         rows.length > 1
@@ -243,11 +243,11 @@ export default class Square extends React.Component {
     const { rows, columns } = this.state;
 
     this.setState({
-      buttonsVisible: rows.length > 1 || columns.length > 1 ? true : false,
+      buttonsVisible: rows.length > 1 || columns.length > 1,
 
-      removeRowButtonDisplay: rows.length > 1 ? true : false,
+      removeRowButtonDisplay: rows.length > 1,
 
-      removeColumnButtonDisplay: columns.length > 1 ? true : false
+      removeColumnButtonDisplay: columns.length > 1
     });
   };
 
